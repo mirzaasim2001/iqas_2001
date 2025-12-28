@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="admin-panel">
+    <h1>Admin Panel</h1>
+
+    <!-- ADD NICHE -->
+    <h3>Add New Niche</h3>
+    <form method="post" action="/admin/add-niche">
+        <input type="text" name="niche" placeholder="e.g. fashion" required>
+        <button>Add Niche</button>
+    </form>
+
+    <!-- FEATURE PRODUCT -->
+    <h3>Feature Product on Home</h3>
+    <form method="post" action="/admin/feature">
+        <input type="text" name="title" placeholder="Product Title" required>
+        <input type="text" name="image" placeholder="Image URL" required>
+        <input type="text" name="price" placeholder="Price" required>
+        <input type="text" name="link" placeholder="Affiliate Link" required>
+        <button>Feature</button>
+    </form>
+
+    <h3>Manage Niches</h3>
+
+    {% for niche in products.keys() %}
+    <div class="admin-niche">
+        <strong>{{ niche | capitalize }}</strong>
+
+        <!-- Rename -->
+        <form method="post" action="/admin/edit-niche" class="inline-form">
+            <input type="hidden" name="old_niche" value="{{ niche }}">
+            <input type="text" name="new_niche" placeholder="Rename niche" required>
+            <button>Rename</button>
+        </form>
+
+        <!-- Delete -->
+        <a href="/admin/delete-niche/{{ niche }}"
+           onclick="return confirm('Delete niche and all its products?')"
+           class="danger">
+           Delete
+        </a>
+    </div>
+    {% endfor %}
+
+    <!-- PRODUCTS LIST -->
+    <h3>Manage Products by Niche</h3>
+
+    {% for niche, items in products.items() %}
+        <div class="admin-niche-block">
+            <h4>{{ niche | capitalize }}</h4>
+
+            {% if items %}
+                {% for product in items %}
+                    <div class="admin-product">
+                        <img src="{{ product.image }}" alt="">
+
+                        <div class="admin-product-info">
+                            <strong>{{ product.title }}</strong>
+                            <p>{{ product.price }}</p>
+
+                            <a href="/admin/edit-product/{{ niche }}/{{ loop.index0 }}">
+                                Edit
+                            </a>
+
+                            <a href="/admin/delete-product/{{ niche }}/{{ loop.index0 }}"
+                               onclick="return confirm('Delete this product?')"
+                               class="danger">
+                                Delete
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="muted">No products in this niche yet.</p>
+            {% endif %}
+        </div>
+    {% endfor %}<h3>Manage Products by Niche</h3>
+
+{% for niche, items in products.items() %}
+<div class="admin-niche-block">
+
+    <h4>{{ niche | capitalize }}</h4>
+
+    <!-- ADD PRODUCT FORM (PER NICHE) -->
+    <form method="post" action="/admin/add-product" class="inline-add-form">
+        <input type="hidden" name="niche" value="{{ niche }}">
+
+        <input type="text" name="title" placeholder="Product title" required>
+        <input type="text" name="price" placeholder="Price" required>
+        <input type="text" name="image" placeholder="Image URL" required>
+        <input type="text" name="link" placeholder="Affiliate link" required>
+
+        <button>Add Product</button>
+    </form>
+
+    {% if items %}
+        {% for product in items %}
+        <div class="admin-product">
+            <img src="{{ product.image }}" alt="">
+
+            <div class="admin-product-info">
+                <strong>{{ product.title }}</strong>
+                <p>{{ product.price }}</p>
+
+                <a href="/admin/edit-product/{{ niche }}/{{ loop.index0 }}">Edit</a>
+                <a href="/admin/delete-product/{{ niche }}/{{ loop.index0 }}"
+                   class="danger"
+                   onclick="return confirm('Delete this product?')">
+                   Delete
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="muted">No products yet. Add one above.</p>
+    {% endif %}
+
+</div>
+{% endfor %}
+
+
+    <a class="logout" href="/logout">Logout</a>
+</section>
+
+{% endblock %}

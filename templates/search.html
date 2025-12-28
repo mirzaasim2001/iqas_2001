@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="page-header">
+    <h1>Search Products</h1>
+
+    <form method="get">
+        <input type="text" name="q" placeholder="Search on Amazon..." required>
+        <button type="submit">Search</button>
+    </form>
+</section>
+
+{% if products %}
+<section class="grid">
+    {% for product in products %}
+    <div class="product-card">
+        <a href="{{ product.link }}" target="_blank">
+            <img src="{{ product.image }}">
+        </a>
+        <h4>{{ product.title }}</h4>
+        <p>{{ product.price }}</p>
+    </div>
+    {% endfor %}
+</section>
+{% endif %}
+
+{% endblock %}

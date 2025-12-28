@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero">
+    <div>
+        <h1>Intelligent Quality Affiliate System</h1>
+        <p>Discover trending products across curated niches with a futuristic shopping experience.</p>
+    </div>
+</section>
+
+<section class="niches">
+    <h2>Browse by Niche</h2>
+    <div class="grid">
+        {% for niche in niches %}
+        <a href="/niche/{{ niche }}" class="card">
+            <h3>{{ niche | capitalize }}</h3>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+{% if featured %}
+<section class="featured">
+    <h2>Featured Picks</h2>
+    <div class="grid">
+        {% for product in featured %}
+        <div class="product-card">
+            <a href="{{ product.link }}" target="_blank">
+                <img src="{{ product.image }}" alt="">
+            </a>
+            <h4>{{ product.title }}</h4>
+            <p>{{ product.price }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{% endblock %}

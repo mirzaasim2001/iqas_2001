@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="page-header">
+    <h1>{{ niche | capitalize }} Trends</h1>
+</section>
+
+<section class="grid">
+    {% for product in products %}
+    <div class="product-card">
+        <a href="{{ product.link }}" target="_blank">
+            <img src="{{ product.image }}" alt="">
+        </a>
+        <h4>{{ product.title }}</h4>
+        <p>{{ product.price }}</p>
+    </div>
+    {% endfor %}
+</section>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IQAS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">IQAS</div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/contact">Contact</a>
+        <a href="/admin">Admin</a>
+    </div>
+</nav>
+
+{% block content %}{% endblock %}
+
+<footer class="footer">
+    <p>© 2025 IQAS • Affiliate Disclosure: We may earn commissions.</p>
+</footer>
+
+</body>
+</html>
