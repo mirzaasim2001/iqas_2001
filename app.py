@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash
 from config import SECRET_KEY, ADMIN_USERNAME, ADMIN_PASSWORD
 from supabase import create_client
 import os
@@ -41,10 +41,25 @@ def delete_niche(niche):
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
 
+    # count products in this niche FIRST
+    count = (
+        supabase.table("products")
+        .select("id", count="exact")
+        .eq("niche", niche)
+        .execute()
+        .count
+    )
+
+    # block deletion if products exist
+    if count > 0:
+        flash("Delete all products in this niche first.")
+        return redirect("/admin/panel")
+
+    # safe to delete niche
     supabase.table("niches").delete().eq("name", niche).execute()
-    supabase.table("products").delete().eq("niche", niche).execute()
 
     return redirect("/admin/panel")
+
 
 
 # ---------------- EDIT NICHE ----------------
@@ -109,13 +124,23 @@ def admin_panel():
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
 
-    products = supabase.table("products").select("*").execute().data
-    grouped = {}
+    # fetch niches
+    niches = supabase.table("niches").select("name").execute().data
+    niche_names = [n["name"] for n in niches]
 
+    # fetch products
+    products = supabase.table("products").select("*").execute().data
+
+    # group products by niche (even if empty)
+    grouped = {niche: [] for niche in niche_names}
     for p in products:
         grouped.setdefault(p["niche"], []).append(p)
 
-    return render_template("admin_panel.html", products=grouped)
+    return render_template(
+        "admin_panel.html",
+        products=grouped,
+        niches=niche_names
+    )
 
 
 # ---------------- ADD NICHE ----------------
@@ -164,6 +189,8 @@ def feature_product():
     }).execute()
 
     return redirect("/")
+
+
 
 
 # ---------------- DELETE PRODUCT ----------------

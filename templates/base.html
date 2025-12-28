@@ -6,6 +6,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="flash">
+      {{ messages[0] }}
+    </div>
+  {% endif %}
+{% endwith %}
 
 <nav class="navbar">
     <div class="logo">IQAS</div>
