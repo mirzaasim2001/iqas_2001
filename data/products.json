@@ -1,5 +1,12 @@
 {
   "fashion": [],
-  "electronics": [],
+  "electronics": [
+    {
+      "title": "Samsung Galaxy A55 5G (Awesome Iceblue, 8GB RAM, 256GB Storage) | AI | Metal Frame | 50 MP Main Camera (OIS) | Super HDR Video| Nightography | IP67 | Corning Gorilla Glass Victus+ | sAMOLED Display",
+      "price": "\u20b922,033.05",
+      "image": "https://m.media-amazon.com/images/I/81pQfKZBmXL._SX679_.jpg",
+      "link": "https://www.amazon.in/Samsung-Awesome-Iceblue-Storage-Nightography/dp/B0CWPCFSM3?pf_rd_r=FMZWTAQJSS5P88ERAZVM&pf_rd_p=2b343ac0-d264-495b-a80e-6e255ba977e6&th=1&linkCode=ll1&tag=mirzaasim2001-21&linkId=d7c25bf37d44ae26a184ace60f7d70ea&language=en_IN&ref_=as_li_ss_tl"
+    }
+  ],
   "home decor": []
 }

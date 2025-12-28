@@ -59,11 +59,11 @@
                             <strong>{{ product.title }}</strong>
                             <p>{{ product.price }}</p>
 
-                            <a href="/admin/edit-product/{{ niche }}/{{ loop.index0 }}">
+                            <a href="/admin/edit-product/{{ niche }}/{{ product.id }}">
                                 Edit
                             </a>
 
-                            <a href="/admin/delete-product/{{ niche }}/{{ loop.index0 }}"
+                            <a href="/admin/delete-product/{{ niche }}/{{ product.id }}"
                                onclick="return confirm('Delete this product?')"
                                class="danger">
                                 Delete
@@ -103,8 +103,8 @@
                 <strong>{{ product.title }}</strong>
                 <p>{{ product.price }}</p>
 
-                <a href="/admin/edit-product/{{ niche }}/{{ loop.index0 }}">Edit</a>
-                <a href="/admin/delete-product/{{ niche }}/{{ loop.index0 }}"
+                <a href="/admin/edit-product/{{ niche }}/{{ product.id }}">Edit</a>
+                <a href="/admin/delete-product/{{ niche }}/{{ product.id }}"
                    class="danger"
                    onclick="return confirm('Delete this product?')">
                    Delete
