@@ -208,10 +208,58 @@ section h3 {
 
 .slider-track {
     display: flex;
-    gap: 26px;
     width: max-content;
-    animation: slide-right 10s linear infinite;
+    animation: marquee 12s linear infinite;
 }
+
+.slider-group {
+    display: flex;
+    gap: 26px;
+}
+
+/* card same size as product cards */
+.slider-card {
+    min-width: 230px;
+    max-width: 230px;
+    background: white;
+    border-radius: 22px;
+    padding: 18px;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.slider-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    background: var(--blue-light);
+    border-radius: 16px;
+    padding: 10px;
+}
+
+.slider-card h4 {
+    margin-top: 12px;
+    font-size: 15px;
+}
+
+.slider-card p {
+    margin-top: 6px;
+    font-weight: 600;
+    color: var(--blue-primary);
+}
+
+/* TRUE CONTINUOUS LOOP */
+@keyframes marquee {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+
+
 
 /* MATCH NICHE PRODUCT CARD SIZE */
 .slider-card {
@@ -250,14 +298,6 @@ section h3 {
     font-weight: 600;
     color: var(--blue-primary);
 }
-
-/* ANIMATION */
-@keyframes slide-right {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-}
-
-
 
 /* ---------------- ADMIN ---------------- */
 

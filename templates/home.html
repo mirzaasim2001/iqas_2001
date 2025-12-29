@@ -15,21 +15,52 @@
 <section class="featured-slider">
     <h2>Featured Picks</h2>
 
-    <div class="slider-wrapper">
-        <div class="slider-track">
-
-            {# FIRST PASS #}
-            {% for product in featured %}
-            <div class="slider-card">
-                <a href="/niche/{{ product.niche }}/{{ product.id }}">
-                    <img src="{{ product.image }}" alt="">
+    {% if featured|length == 1 %}
+        <!-- SINGLE FEATURED -->
+        <div class="grid">
+            <div class="product-card">
+                <a href="/product/{{ featured[0].id }}">
+                    <img src="{{ featured[0].image }}" alt="">
                 </a>
-                <h4>{{ product.title }}</h4>
-                <p>{{ product.price }}</p>
+                <h4>{{ featured[0].title }}</h4>
+                <p>{{ featured[0].price }}</p>
             </div>
-            {% endfor %}
         </div>
-    </div>
+
+    {% else %}
+        <!-- TRUE INFINITE SLIDER -->
+        <div class="slider-wrapper">
+            <div class="slider-track">
+
+                <!-- GROUP 1 -->
+                <div class="slider-group">
+                    {% for product in featured %}
+                    <div class="slider-card">
+                        <a href="/product/{{ product.id }}">
+                            <img src="{{ product.image }}" alt="">
+                        </a>
+                        <h4>{{ product.title }}</h4>
+                        <p>{{ product.price }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- GROUP 2 (CLONE) -->
+                <div class="slider-group">
+                    {% for product in featured %}
+                    <div class="slider-card">
+                        <a href="/product/{{ product.id }}">
+                            <img src="{{ product.image }}" alt="">
+                        </a>
+                        <h4>{{ product.title }}</h4>
+                        <p>{{ product.price }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    {% endif %}
 </section>
 {% endif %}
 
