@@ -207,22 +207,44 @@ def add_product():
     return redirect("/admin/panel")
 
 
-# ---------------- FEATURE PRODUCT ----------------
-@app.route("/admin/feature", methods=["POST"])
-def feature_product():
+
+# ---------------- TOGGLE FEATURE ----------------
+@app.route("/admin/toggle-feature/<product_id>")
+def toggle_feature(product_id):
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
 
-    supabase.table("products").insert({
-        "niche": "featured",
-        "title": request.form["title"],
-        "price": request.form["price"],
-        "image": request.form["image"],
-        "link": request.form["link"],
-        "is_featured": True
-    }).execute()
+    product = (
+        supabase.table("products")
+        .select("is_featured")
+        .eq("id", product_id)
+        .single()
+        .execute()
+        .data
+    )
 
-    return redirect("/")
+    supabase.table("products").update({
+        "is_featured": not product["is_featured"]
+    }).eq("id", product_id).execute()
+
+    return redirect("/admin/panel")
+
+# # ---------------- FEATURE PRODUCT ----------------
+# @app.route("/admin/feature", methods=["POST"])
+# def feature_product():
+#     if session.get("admin") != ADMIN_USERNAME:
+#         return redirect("/admin")
+#
+#     supabase.table("products").insert({
+#         "niche": "featured",
+#         "title": request.form["title"],
+#         "price": request.form["price"],
+#         "image": request.form["image"],
+#         "link": request.form["link"],
+#         "is_featured": True
+#     }).execute()
+#
+#     return redirect("/")
 
 
 

@@ -4,12 +4,47 @@
 <section class="hero">
     <div>
         <h1>Intelligent Quality Affiliate System</h1>
-        <p>Discover trending products across curated niches with a futuristic shopping experience.</p>
+        <!-- stronger description -->
+        <p class="hero-desc">
+            Discover trending products across curated niches, and explore them through a sleek, futuristic interface that feels like tomorrow’s shopping—today.
+        </p>
     </div>
 </section>
 
+{% if featured %}
+<section class="featured-slider">
+    <h2>Featured Picks</h2>
+
+    <div class="slider-wrapper">
+        <div class="slider-track">
+            {% for product in featured %}
+            <div class="slider-card">
+                <a href="/niche/{{ product.niche }}/{{ product.id }}">
+                    <img src="{{ product.image }}" alt="">
+                </a>
+                <h4>{{ product.title }}</h4>
+                <p>{{ product.price }}</p>
+            </div>
+            {% endfor %}
+
+            {# DUPLICATE ONCE FOR SMOOTH LOOP #}
+            {% for product in featured %}
+            <div class="slider-card">
+                <a href="{{ product.link }}" target="_blank">
+                    <img src="{{ product.image }}" alt="">
+                </a>
+                <h4>{{ product.title }}</h4>
+                <p>{{ product.price }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
 <section class="niches">
-    <h2>Browse by Niche</h2>
+    <h2>Browse by niche</h2>
     <div class="grid">
         {% for niche in niches %}
         <a href="/niche/{{ niche }}" class="card">
@@ -18,22 +53,5 @@
         {% endfor %}
     </div>
 </section>
-
-{% if featured %}
-<section class="featured">
-    <h2>Featured Picks</h2>
-    <div class="grid">
-        {% for product in featured %}
-        <div class="product-card">
-            <a href="{{ product.link }}" target="_blank">
-                <img src="{{ product.image }}" alt="">
-            </a>
-            <h4>{{ product.title }}</h4>
-            <p>{{ product.price }}</p>
-        </div>
-        {% endfor %}
-    </div>
-</section>
-{% endif %}
 
 {% endblock %}

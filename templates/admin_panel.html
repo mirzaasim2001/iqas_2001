@@ -7,18 +7,8 @@
     <!-- ADD NICHE -->
     <h3>Add New Niche</h3>
     <form method="post" action="/admin/add-niche">
-        <input type="text" name="niche" placeholder="e.g. fashion" required>
+        <input type="text" name="niche" placeholder="e.g. electronics" required>
         <button>Add Niche</button>
-    </form>
-
-    <!-- FEATURE PRODUCT -->
-    <h3>Feature Product on Home</h3>
-    <form method="post" action="/admin/feature">
-        <input type="text" name="title" placeholder="Product Title" required>
-        <input type="text" name="image" placeholder="Image URL" required>
-        <input type="text" name="price" placeholder="Price" required>
-        <input type="text" name="link" placeholder="Affiliate Link" required>
-        <button>Feature</button>
     </form>
 
     <!-- MANAGE NICHES -->
@@ -69,6 +59,15 @@
                 <div class="admin-product-info">
                     <strong>{{ product.title }}</strong>
                     <p>{{ product.price }}</p>
+
+                    <!-- FEATURE TOGGLE -->
+                    <a href="/admin/toggle-feature/{{ product.id }}">
+                        {% if product.is_featured %}
+                            ⭐ Unfeature
+                        {% else %}
+                            ☆ Feature
+                        {% endif %}
+                    </a>
 
                     <a href="/admin/edit-product/{{ niche }}/{{ product.id }}">
                         Edit Full Details
