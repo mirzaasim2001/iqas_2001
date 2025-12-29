@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="page-header">
+    <h1>{{ product.title }}</h1>
+</section>
+
+<section>
+    <div class="grid" style="grid-template-columns: 1fr 1fr;">
+        
+        <!-- MAIN IMAGE -->
+        <div>
+            <img src="{{ product.image }}" style="width:100%; border-radius:20px;">
+        </div>
+
+        <!-- PRODUCT INFO -->
+        <div>
+            <h2>{{ product.price }}</h2>
+
+            {% if product.description %}
+                <p style="margin-top:15px;">{{ product.description }}</p>
+            {% endif %}
+
+            <a href="{{ product.link }}" target="_blank">
+                <button style="margin-top:20px;">Purchase</button>
+            </a>
+        </div>
+    </div>
+
+    <!-- EXTRA IMAGES (OPTIONAL) -->
+    {% if images %}
+    <h3>More Images</h3>
+
+    <div class="grid"
+         style="grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap:15px;">
+      {% for img in images %}
+        <img
+          src="{{ img }}"
+          style="width:100%; border-radius:12px;"
+          loading="lazy"
+        >
+      {% endfor %}
+    </div>
+    {% endif %}
+
+
+</section>
+
+{% endblock %}

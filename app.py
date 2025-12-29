@@ -92,6 +92,38 @@ def niche(name):
     return render_template("niche.html", niche=name, products=products)
 
 
+# ---------------- PRODUCT DETAIL PAGE ----------------
+@app.route("/niche/<niche>/<product_id>")
+def product_detail(niche, product_id):
+    product = (
+        supabase.table("products")
+        .select("*")
+        .eq("id", product_id)
+        .single()
+        .execute()
+        .data
+    )
+
+    if not product:
+        return redirect("/")
+
+    images = []
+
+    if product.get("extra_image_1"):
+        images.append(product["extra_image_1"])
+    if product.get("extra_image_2"):
+        images.append(product["extra_image_2"])
+    if product.get("extra_image_3"):
+        images.append(product["extra_image_3"])
+
+    return render_template(
+        "product_detail.html",
+        product=product,
+        niche=niche,
+        images=images
+    )
+
+
 # ---------------- SAVED ----------------
 @app.route("/saved")
 def saved():
@@ -167,6 +199,8 @@ def add_product():
         "price": request.form["price"],
         "image": request.form["image"],
         "link": request.form["link"],
+        "description": "",
+        "extra_images": "",
         "is_featured": False
     }).execute()
 
@@ -223,7 +257,12 @@ def edit_product(niche, product_id):
             "title": request.form["title"],
             "price": request.form["price"],
             "image": request.form["image"],
-            "link": request.form["link"]
+            "link": request.form["link"],
+            "description": request.form.get("description"),
+
+            "extra_image_1": request.form.get("extra_image_1") or None,
+            "extra_image_2": request.form.get("extra_image_2") or None,
+            "extra_image_3": request.form.get("extra_image_3") or None,
         }).eq("id", product_id).execute()
 
         return redirect("/admin/panel")

@@ -21,104 +21,73 @@
         <button>Feature</button>
     </form>
 
+    <!-- MANAGE NICHES -->
     <h3>Manage Niches</h3>
-
     {% for niche in products.keys() %}
     <div class="admin-niche">
         <strong>{{ niche | capitalize }}</strong>
 
-        <!-- Rename -->
         <form method="post" action="/admin/edit-niche" class="inline-form">
             <input type="hidden" name="old_niche" value="{{ niche }}">
             <input type="text" name="new_niche" placeholder="Rename niche" required>
             <button>Rename</button>
         </form>
 
-        <!-- Delete -->
         <a href="/admin/delete-niche/{{ niche }}"
-           onclick="return confirm('Delete niche and all its products?')"
-           class="danger">
+           class="danger"
+           onclick="return confirm('Delete niche only if empty?')">
            Delete
         </a>
     </div>
     {% endfor %}
 
-    <!-- PRODUCTS LIST -->
+    <!-- MANAGE PRODUCTS -->
     <h3>Manage Products by Niche</h3>
 
     {% for niche, items in products.items() %}
-        <div class="admin-niche-block">
-            <h4>{{ niche | capitalize }}</h4>
+    <div class="admin-niche-block">
 
-            {% if items %}
-                {% for product in items %}
-                    <div class="admin-product">
-                        <img src="{{ product.image }}" alt="">
+        <h4>{{ niche | capitalize }}</h4>
 
-                        <div class="admin-product-info">
-                            <strong>{{ product.title }}</strong>
-                            <p>{{ product.price }}</p>
+        <!-- ADD PRODUCT FORM -->
+        <form method="post" action="/admin/add-product" class="inline-add-form">
+            <input type="hidden" name="niche" value="{{ niche }}">
 
-                            <a href="/admin/edit-product/{{ niche }}/{{ product.id }}">
-                                Edit
-                            </a>
+            <input type="text" name="title" placeholder="Product title" required>
+            <input type="text" name="price" placeholder="Price" required>
+            <input type="text" name="image" placeholder="Main Image URL" required>
+            <input type="text" name="link" placeholder="Affiliate link" required>
 
-                            <a href="/admin/delete-product/{{ niche }}/{{ product.id }}"
-                               onclick="return confirm('Delete this product?')"
-                               class="danger">
-                                Delete
-                            </a>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p class="muted">No products in this niche yet.</p>
-            {% endif %}
-        </div>
-    {% endfor %}<h3>Manage Products by Niche</h3>
+            <button>Add Product</button>
+        </form>
 
-{% for niche, items in products.items() %}
-<div class="admin-niche-block">
+        {% if items %}
+            {% for product in items %}
+            <div class="admin-product">
+                <img src="{{ product.image }}" alt="">
 
-    <h4>{{ niche | capitalize }}</h4>
+                <div class="admin-product-info">
+                    <strong>{{ product.title }}</strong>
+                    <p>{{ product.price }}</p>
 
-    <!-- ADD PRODUCT FORM (PER NICHE) -->
-    <form method="post" action="/admin/add-product" class="inline-add-form">
-        <input type="hidden" name="niche" value="{{ niche }}">
+                    <a href="/admin/edit-product/{{ niche }}/{{ product.id }}">
+                        Edit Full Details
+                    </a>
 
-        <input type="text" name="title" placeholder="Product title" required>
-        <input type="text" name="price" placeholder="Price" required>
-        <input type="text" name="image" placeholder="Image URL" required>
-        <input type="text" name="link" placeholder="Affiliate link" required>
-
-        <button>Add Product</button>
-    </form>
-
-    {% if items %}
-        {% for product in items %}
-        <div class="admin-product">
-            <img src="{{ product.image }}" alt="">
-
-            <div class="admin-product-info">
-                <strong>{{ product.title }}</strong>
-                <p>{{ product.price }}</p>
-
-                <a href="/admin/edit-product/{{ niche }}/{{ product.id }}">Edit</a>
-                <a href="/admin/delete-product/{{ niche }}/{{ product.id }}"
-                   class="danger"
-                   onclick="return confirm('Delete this product?')">
-                   Delete
-                </a>
+                    <a href="/admin/delete-product/{{ niche }}/{{ product.id }}"
+                       class="danger"
+                       onclick="return confirm('Delete this product?')">
+                       Delete
+                    </a>
+                </div>
             </div>
-        </div>
-        {% endfor %}
-    {% else %}
-        <p class="muted">No products yet. Add one above.</p>
-    {% endif %}
+            {% endfor %}
+        {% else %}
+            <p class="muted">No products yet. Add one above.</p>
+        {% endif %}
 
-</div>
-{% endfor %}
-
+    </div>
+    {% endfor %}
 
     <a class="logout" href="/logout">Logout</a>
 </section>

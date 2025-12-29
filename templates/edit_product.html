@@ -5,12 +5,65 @@
     <h2>Edit Product</h2>
 
     <form method="post">
-        <input type="text" name="title" value="{{ product.title }}" required>
-        <input type="text" name="price" value="{{ product.price }}" required>
-        <input type="text" name="image" value="{{ product.image }}" required>
-        <input type="text" name="link" value="{{ product.link }}" required>
-        <button>Update</button>
-    </form>
+
+    <input
+      type="text"
+      name="title"
+      placeholder="Product title"
+      value="{{ product.title }}"
+      required
+    >
+
+    <input
+      type="text"
+      name="price"
+      placeholder="Price (₹)"
+      value="{{ product.price }}"
+      required
+    >
+
+    <input
+      type="text"
+      name="image"
+      placeholder="Main image URL"
+      value="{{ product.image }}"
+      required
+    >
+
+    <input
+      type="text"
+      name="link"
+      placeholder="Affiliate link"
+      value="{{ product.link }}"
+      required
+    >
+
+    <textarea
+      name="description"
+      placeholder="Product description (shown on product page)"
+      rows="4"
+    >{{ product.description or "" }}</textarea>
+
+   <label>Extra Image 1</label>
+    <input type="text" name="extra_image_1"
+           value="{{ product.extra_image_1 or '' }}"
+           placeholder="https://example.com/image1.jpg">
+
+    <label>Extra Image 2</label>
+    <input type="text" name="extra_image_2"
+           value="{{ product.extra_image_2 or '' }}"
+           placeholder="https://example.com/image2.jpg">
+
+    <label>Extra Image 3</label>
+    <input type="text" name="extra_image_3"
+           value="{{ product.extra_image_3 or '' }}"
+           placeholder="https://example.com/image3.jpg">
+
+
+
+    <button type="submit">Save Changes</button>
+</form>
+
 
     <a href="/admin/panel">Back</a>
 </section>

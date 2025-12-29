@@ -8,12 +8,14 @@
 <section class="grid">
     {% for product in products %}
     <div class="product-card">
-        <a href="{{ product.link }}" target="_blank">
-            <img src="{{ product.image }}" alt="">
+        <a href="/niche/{{ niche }}/{{ product.id }}" class="product-link">
+            <img src="{{ product.image }}" alt="{{ product.title }}">
+            <h4>{{ product.title }}</h4>
         </a>
-        <h4>{{ product.title }}</h4>
-        <p>{{ product.price }}</p>
+
+        <p class="price">{{ product.price }}</p>
     </div>
+
     {% endfor %}
 </section>
 
