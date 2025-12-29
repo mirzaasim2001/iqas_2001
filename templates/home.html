@@ -17,20 +17,11 @@
 
     <div class="slider-wrapper">
         <div class="slider-track">
+
+            {# FIRST PASS #}
             {% for product in featured %}
             <div class="slider-card">
                 <a href="/niche/{{ product.niche }}/{{ product.id }}">
-                    <img src="{{ product.image }}" alt="">
-                </a>
-                <h4>{{ product.title }}</h4>
-                <p>{{ product.price }}</p>
-            </div>
-            {% endfor %}
-
-            {# DUPLICATE ONCE FOR SMOOTH LOOP #}
-            {% for product in featured %}
-            <div class="slider-card">
-                <a href="{{ product.link }}" target="_blank">
                     <img src="{{ product.image }}" alt="">
                 </a>
                 <h4>{{ product.title }}</h4>
@@ -41,6 +32,7 @@
     </div>
 </section>
 {% endif %}
+
 
 
 <section class="niches">

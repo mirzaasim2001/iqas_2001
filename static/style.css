@@ -210,7 +210,7 @@ section h3 {
     display: flex;
     gap: 26px;
     width: max-content;
-    animation: slide-right 15s linear infinite;
+    animation: slide-right 10s linear infinite;
 }
 
 /* MATCH NICHE PRODUCT CARD SIZE */

@@ -208,6 +208,7 @@ def add_product():
 
 
 
+
 # ---------------- TOGGLE FEATURE ----------------
 @app.route("/admin/toggle-feature/<product_id>")
 def toggle_feature(product_id):
