@@ -15,19 +15,77 @@
 {% endwith %}
 
 <nav class="navbar">
-    <div class="logo">IQAS</div>
-    <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/contact">Contact</a>
-        <a href="/admin">Admin</a>
+
+    <!-- LEFT : BRAND -->
+    <div class="logo-block">
+        <div class="logo">
+            IQAS <span class="logo-dot"></span>
+        </div>
+        <div class="logo-tagline">
+            Smart picks. Zero noise.
+        </div>
     </div>
+
+    <!-- RIGHT : META + LINKS -->
+    <div class="nav-right">
+        <span class="nav-meta">AI-Curated Picks</span>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/contact">Contact</a>
+            <a href="/admin">Admin</a>
+        </div>
+    </div>
+
 </nav>
+
 
 {% block content %}{% endblock %}
 
 <footer class="footer">
     <p>© 2025 IQAS • Affiliate Disclosure: We may earn commissions.</p>
 </footer>
+
+<script>
+const input = document.getElementById("productSearch");
+const resultsBox = document.getElementById("searchResults");
+
+if (input) {
+    input.addEventListener("input", async () => {
+        const query = input.value.trim();
+
+        if (query.length < 2) {
+            resultsBox.innerHTML = "";
+            resultsBox.style.display = "none";
+            return;
+        }
+
+        const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+        const data = await res.json();
+
+        if (!data.results.length) {
+            resultsBox.innerHTML = "<div class='no-result'>No products found</div>";
+            resultsBox.style.display = "block";
+            return;
+        }
+
+        resultsBox.innerHTML = data.results.map(p => `
+            <a href="/niche/${p.niche}/${p.id}" class="search-item">
+                <img src="${p.image}" alt="">
+                <span>${p.title}</span>
+            </a>
+        `).join("");
+
+        resultsBox.style.display = "block";
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".search-box")) {
+            resultsBox.style.display = "none";
+        }
+    });
+}
+</script>
 
 </body>
 </html>

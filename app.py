@@ -69,7 +69,7 @@ def edit_niche():
         return redirect("/admin")
 
     old = request.form["old_niche"]
-    new = request.form["new_niche"].lower()
+    new = slugify(request.form["new_niche"])
 
     supabase.table("niches").update({"name": new}).eq("name", old).execute()
     supabase.table("products").update({"niche": new}).eq("niche", old).execute()
@@ -176,15 +176,27 @@ def admin_panel():
 
 
 # ---------------- ADD NICHE ----------------
+
+import re
+
+def slugify(text):
+    return re.sub(r'[^a-z0-9]+', '-', text.lower()).strip('-')
+
+
 @app.route("/admin/add-niche", methods=["POST"])
 def add_niche():
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
 
-    niche = request.form["niche"].lower()
-    supabase.table("niches").insert({"name": niche}).execute()
+    raw = request.form["niche"]
+    niche = slugify(raw)
+
+    supabase.table("niches").insert({
+        "name": niche
+    }).execute()
 
     return redirect("/admin/panel")
+
 
 
 # ---------------- ADD PRODUCT ----------------
@@ -296,6 +308,68 @@ def edit_product(niche, product_id):
         niche=niche,
         index=product_id
     )
+
+
+# ---------------- SEARCH PRODUCTS ----------------
+@app.route("/search")
+def search_products():
+    query = request.args.get("q", "").strip()
+
+    if not query:
+        return redirect("/")
+
+    results = (
+        supabase.table("products")
+        .select("*")
+        .ilike("title", f"%{query}%")
+        .execute()
+        .data
+    )
+
+    return render_template(
+        "search_results.html",
+        query=query,
+        products=results
+    )
+
+
+@app.route("/api/search")
+def api_search():
+    query = request.args.get("q", "").strip().lower()
+
+    if len(query) < 2:
+        return {"results": []}
+
+    try:
+        # 1️⃣ Fetch a SAFE subset (recent products only)
+        response = (
+            supabase
+            .table("products")
+            .select("id, title, image, niche")
+            .execute()
+        )
+
+        products = response.data or []
+
+        # 2️⃣ Python-side fuzzy filtering
+        matches = [
+            p for p in products
+            if query in (p.get("title") or "").lower()
+        ]
+
+        # 3️⃣ Limit results
+        matches = matches[:8]
+
+        return {"results": matches}
+
+    except Exception as e:
+        print("SEARCH ERROR:", e)
+        return {"results": []}
+
+
+
+
+
 
 
 # ---------------- LOGOUT ----------------
