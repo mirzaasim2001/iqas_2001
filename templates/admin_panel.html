@@ -8,28 +8,48 @@
     <h3>Add New Niche</h3>
     <form method="post" action="/admin/add-niche">
         <input type="text" name="niche" placeholder="e.g. electronics" required>
+        <input type="text" name="logo" placeholder="Niche Logo URL (optional)">
         <button>Add Niche</button>
     </form>
 
     <!-- MANAGE NICHES -->
     <h3>Manage Niches</h3>
-    {% for niche in products.keys() %}
+    {% for niche in niches %}
     <div class="admin-niche">
-        <strong>{{ niche | capitalize }}</strong>
 
+        <strong>{{ niche.name | capitalize }}</strong>
+
+        <!-- RENAME -->
         <form method="post" action="/admin/edit-niche" class="inline-form">
-            <input type="hidden" name="old_niche" value="{{ niche }}">
+            <input type="hidden" name="old_niche" value="{{ niche.name }}">
             <input type="text" name="new_niche" placeholder="Rename niche" required>
             <button>Rename</button>
         </form>
 
-        <a href="/admin/delete-niche/{{ niche }}"
-           class="danger"
-           onclick="return confirm('Delete niche only if empty?')">
-           Delete
+        <!-- LOGO URL -->
+        <form method="post" action="/admin/update-niche-logo" class="inline-form">
+            <input type="hidden" name="niche" value="{{ niche.name }}">
+            <input
+                type="text"
+                name="logo"
+                placeholder="Niche logo URL (optional)"
+                value="{{ niche.logo or '' }}"
+            >
+            <button>Save Logo</button>
+        </form>
+
+        <!-- DELETE -->
+        <a
+            href="/admin/delete-niche/{{ niche.name }}"
+            class="danger"
+            onclick="return confirm('Delete niche only if empty?')"
+        >
+            Delete
         </a>
+
     </div>
     {% endfor %}
+
 
     <!-- MANAGE PRODUCTS -->
     <h3>Manage Products by Niche</h3>

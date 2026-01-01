@@ -18,7 +18,14 @@ supabase = create_client(
 # ---------------- HOME ----------------
 @app.route("/")
 def home():
-    niches = supabase.table("niches").select("name").execute().data
+    niches = (
+        supabase
+        .table("niches")
+        .select("name, logo")
+        .execute()
+        .data
+    )
+
     featured = (
         supabase.table("products")
         .select("*")
@@ -30,9 +37,10 @@ def home():
 
     return render_template(
         "home.html",
-        niches=[n["name"] for n in niches],
+        niches=niches,
         featured=featured
     )
+
 
 
 # ---------------- DELETE NICHE ----------------
@@ -73,6 +81,22 @@ def edit_niche():
 
     supabase.table("niches").update({"name": new}).eq("name", old).execute()
     supabase.table("products").update({"niche": new}).eq("niche", old).execute()
+
+    return redirect("/admin/panel")
+
+
+# ---------------- UPDATE NICHE LOGO ----------------
+@app.route("/admin/update-niche-logo", methods=["POST"])
+def update_niche_logo():
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
+
+    niche = request.form["niche"]
+    logo = request.form.get("logo") or None
+
+    supabase.table("niches").update({
+        "logo": logo
+    }).eq("name", niche).execute()
 
     return redirect("/admin/panel")
 
@@ -157,7 +181,7 @@ def admin_panel():
         return redirect("/admin")
 
     # fetch niches
-    niches = supabase.table("niches").select("name").execute().data
+    niches = supabase.table("niches").select("name, logo").execute().data
     niche_names = [n["name"] for n in niches]
 
     # fetch products
@@ -171,7 +195,7 @@ def admin_panel():
     return render_template(
         "admin_panel.html",
         products=grouped,
-        niches=niche_names
+        niches=niches
     )
 
 
@@ -192,7 +216,8 @@ def add_niche():
     niche = slugify(raw)
 
     supabase.table("niches").insert({
-        "name": niche
+        "name": niche,
+        "logo": request.form.get("logo")
     }).execute()
 
     return redirect("/admin/panel")

@@ -84,12 +84,28 @@
 {% endif %}
 
 <!-- NICHES -->
-<section class="section-box">
+<section class="niches-section">
     <h2 class="section-title">Browse by niche</h2>
+
     <div class="grid">
         {% for niche in niches %}
-        <a href="/niche/{{ niche }}" class="card">
-            <h3>{{ niche | capitalize }}</h3>
+        <a
+            href="/niche/{{ niche.name if niche is mapping else niche }}"
+            class="card niche-card"
+        >
+            <h3>
+                {{ (niche.name if niche is mapping else niche)
+                    | replace('-', ' ')
+                    | capitalize }}
+            </h3>
+
+            {% if niche is mapping and niche.logo %}
+                <img
+                    src="{{ niche.logo }}"
+                    alt="{{ niche.name }}"
+                    class="niche-logo"
+                >
+            {% endif %}
         </a>
         {% endfor %}
     </div>
