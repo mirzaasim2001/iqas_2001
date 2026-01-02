@@ -42,9 +42,38 @@
 
 {% block content %}{% endblock %}
 
-<footer class="footer">
-    <p>© 2025 IQAS • Affiliate Disclosure: We may earn commissions.</p>
+<footer class="site-footer">
+    <div class="footer-inner">
+
+        <!-- LEFT: ABOUT -->
+        <div class="footer-col">
+            <h4>About IQAS</h4>
+            <p>
+                Intelligent Quality Affiliate System curates high-quality products
+                across trusted niches using a clean, modern experience.
+            </p>
+        </div>
+
+        <!-- RIGHT: SOCIAL -->
+        <div class="footer-col footer-social">
+            <h4>Connect</h4>
+            <div class="social-icons">
+                <a href="#" aria-label="Instagram" target="_blank">
+                    <img src="/static/instagram-logo.jpg" alt="Instagram">
+                </a>
+                <a href="#" aria-label="Pinterest" target="_blank">
+                    <img src="/static/pinterest-logo.png" alt="Pinterest">
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 IQAS — All rights reserved
+    </div>
 </footer>
+
 
 <script>
 const input = document.getElementById("productSearch");

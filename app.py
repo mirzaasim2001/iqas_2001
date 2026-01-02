@@ -30,7 +30,7 @@ def home():
         supabase.table("products")
         .select("*")
         .eq("is_featured", True)
-        .limit(6)
+        .limit(10)
         .execute()
         .data
     )
