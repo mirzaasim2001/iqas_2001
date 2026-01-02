@@ -4,8 +4,29 @@
 <section class="page-header">
     <h1>{{ niche | capitalize }} Trends</h1>
 </section>
+<div class="niche-filter">
+    <div class="filter-box">
 
-<section class="grid">
+        <div class="filter-row">
+            <label for="priceFilter">Sort by price</label>
+            <select id="priceFilter">
+                <option value="">Default</option>
+                <option value="low-high">Low → High</option>
+                <option value="high-low">High → Low</option>
+            </select>
+        </div>
+
+        <div class="filter-row range-row">
+            <label>Price range</label>
+            <<input type="range" id="priceRange" min="0" max="100000" step="500" value="100000">
+            <span id="rangeValue">Up to ₹1,00,000</span>
+        </div>
+
+    </div>
+</div>
+
+
+<section class="grid" id="productGrid">
     {% for product in products %}
     <div class="product-card">
         <a href="/niche/{{ niche }}/{{ product.id }}" class="product-link">
@@ -13,10 +34,66 @@
             <h4>{{ product.title }}</h4>
         </a>
 
-        <p class="price">{{ product.price }}</p>
+        <p class="product-price">{{ product.price }}</p>
     </div>
 
     {% endfor %}
 </section>
+
+<script>
+function extractPrice(text) {
+    return parseFloat(
+        text.replace(/[₹, ]/g, "")
+    ) || 0;
+}
+
+const grid = document.getElementById("productGrid");
+const cards = Array.from(grid.children);
+
+/* SORT */
+document.getElementById("priceFilter").addEventListener("change", function () {
+    const mode = this.value;
+    if (!mode) return;
+
+    cards.sort((a, b) => {
+        const priceA = extractPrice(a.querySelector(".product-price").innerText);
+        const priceB = extractPrice(b.querySelector(".product-price").innerText);
+
+        return mode === "low-high"
+            ? priceA - priceB
+            : priceB - priceA;
+    });
+
+    cards.forEach(card => grid.appendChild(card));
+});
+
+const range = document.getElementById("priceRange");
+const rangeValue = document.getElementById("rangeValue");
+
+const MAX_PRICE = parseInt(range.max);
+
+/* INITIAL STATE */
+rangeValue.innerText = "₹1,00,000+";
+
+/* RANGE FILTER */
+range.addEventListener("input", function () {
+    const maxPrice = parseInt(this.value);
+
+    if (maxPrice === MAX_PRICE) {
+        rangeValue.innerText = "₹1,00,000+";
+    } else {
+        rangeValue.innerText = `Up to ₹${maxPrice.toLocaleString("en-IN")}`;
+    }
+
+    cards.forEach(card => {
+        const price = extractPrice(
+            card.querySelector(".product-price").innerText
+        );
+
+        card.style.display = price <= maxPrice ? "block" : "none";
+    });
+});
+</script>
+
 
 {% endblock %}

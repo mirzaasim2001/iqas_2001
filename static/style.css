@@ -273,6 +273,51 @@ section h3 {
     opacity: 1;
 }
 
+.niche-filter {
+    display: flex;
+    justify-content: center;
+    margin: 35px 0 50px;
+}
+
+.filter-box {
+    background: #f8fafc;
+    border-radius: 18px;
+    padding: 20px 26px;
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    box-shadow: 0 20px 50px rgba(37,99,235,0.12);
+}
+
+/* row layout */
+.filter-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* dropdown */
+.filter-row select {
+    padding: 10px 16px;
+    border-radius: 14px;
+    border: 1.5px solid #c7d2fe;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* slider row */
+.range-row input[type="range"] {
+    width: 180px;
+    accent-color: #2563eb;
+}
+
+.range-row span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e3a8a;
+}
+
+
 /* ---------------- PRODUCTS ---------------- */
 
 .product-card {
