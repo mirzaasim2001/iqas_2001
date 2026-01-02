@@ -15,6 +15,23 @@ supabase = create_client(
 )
 
 
+import re
+
+def tokenize(text):
+    if not text:
+        return set()
+    text = text.lower()
+    text = re.sub(r"[^\w\s]", "", text)
+    return set(text.split())
+
+def similarity_score(title_a, title_b):
+    a = tokenize(title_a)
+    b = tokenize(title_b)
+    if not a or not b:
+        return 0
+    return len(a & b)
+
+
 # ---------------- HOME ----------------
 @app.route("/")
 def home():
@@ -117,8 +134,38 @@ def niche(name):
 
 
 # ---------------- PRODUCT DETAIL PAGE ----------------
+# @app.route("/niche/<niche>/<product_id>")
+# def product_detail(niche, product_id):
+#     product = (
+#         supabase.table("products")
+#         .select("*")
+#         .eq("id", product_id)
+#         .single()
+#         .execute()
+#         .data
+#     )
+#
+#     if not product:
+#         return redirect("/")
+#
+#     images = []
+#
+#     if product.get("extra_image_1"):
+#         images.append(product["extra_image_1"])
+#     if product.get("extra_image_2"):
+#         images.append(product["extra_image_2"])
+#     if product.get("extra_image_3"):
+#         images.append(product["extra_image_3"])
+#
+#     return render_template(
+#         "product_detail.html",
+#         product=product,
+#         niche=niche,
+#         images=images
+#     )
 @app.route("/niche/<niche>/<product_id>")
 def product_detail(niche, product_id):
+
     product = (
         supabase.table("products")
         .select("*")
@@ -131,20 +178,47 @@ def product_detail(niche, product_id):
     if not product:
         return redirect("/")
 
-    images = []
+    # Fetch same-niche products except current
+    candidates = (
+        supabase.table("products")
+        .select("id, title, image, price, niche")
+        .eq("niche", niche)
+        .neq("id", product_id)
+        .execute()
+        .data
+    )
 
-    if product.get("extra_image_1"):
-        images.append(product["extra_image_1"])
-    if product.get("extra_image_2"):
-        images.append(product["extra_image_2"])
-    if product.get("extra_image_3"):
-        images.append(product["extra_image_3"])
+    # Score by title similarity
+    scored = [
+        {
+            **p,
+            "score": similarity_score(product["title"], p["title"])
+        }
+        for p in candidates
+    ]
+
+    # Sort by similarity score (desc)
+    similar = sorted(
+        scored,
+        key=lambda x: x["score"],
+        reverse=True
+    )
+
+    # Take top 3 meaningful matches
+    related = [p for p in similar if p["score"] > 0][:3]
 
     return render_template(
         "product_detail.html",
         product=product,
         niche=niche,
-        images=images
+        images=[
+            img for img in [
+                product.get("extra_image_1"),
+                product.get("extra_image_2"),
+                product.get("extra_image_3")
+            ] if img
+        ],
+        related=related
     )
 
 

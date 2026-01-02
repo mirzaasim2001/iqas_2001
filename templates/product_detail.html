@@ -42,6 +42,24 @@
         >
       {% endfor %}
     </div>
+
+    {% if related %}
+    <section class="related-section">
+        <h3>Similar Products</h3>
+
+        <div class="grid">
+            {% for item in related %}
+            <div class="product-card">
+                <a href="/niche/{{ item.niche }}/{{ item.id }}">
+                    <img src="{{ item.image }}" alt="">
+                </a>
+                <p>{{ item.price }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
     {% endif %}
 
 
