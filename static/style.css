@@ -276,8 +276,11 @@ section h3 {
 .niche-filter {
     display: flex;
     justify-content: center;
-    margin: 35px 0 50px;
+    align-items: center;
+    margin: 10px 0 22px; /* ↓ tighter vertical spacing */
+    gap: 12px;
 }
+
 
 .filter-box {
     background: #f8fafc;
@@ -315,6 +318,18 @@ section h3 {
     font-size: 14px;
     font-weight: 600;
     color: #1e3a8a;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: -30px; /* ↓ reduced gap */
+}
+
+.page-header h1 {
+    font-family: "Playfair Display", "Georgia", serif; /* classic look */
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    font-size: 55px;
 }
 
 
