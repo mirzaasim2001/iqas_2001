@@ -246,6 +246,93 @@ section h3 {
 
 /* ---------------- NICHE CARDS ---------------- */
 
+/* =======================
+   NICHE LAYOUT
+   ======================= */
+
+.niche-main {
+    min-width: 0;
+}
+
+/* Right-side product area */
+.niche-products {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    width: 100%;
+}
+
+.niche-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* LEFT SIDEBAR */
+.sub-niche-panel {
+    background: #f8fafc;
+    border-radius: 18px;
+    padding: 18px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 20px 45px rgba(37,99,235,0.12);
+    position: sticky;
+    top: 120px;
+}
+
+/* LINKS */
+.sub-niche-panel a {
+    padding: 10px 14px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    color: #1e3a8a;
+    transition: background 0.2s, transform 0.15s;
+}
+
+/* HOVER */
+.sub-niche-panel a:hover {
+    background: #eaf1ff;
+    transform: translateX(4px);
+}
+
+/* ACTIVE */
+.sub-niche-panel a.active {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    color: white;
+}
+
+.sub-niche-list {
+    margin-top: 12px;
+    list-style: none;
+    padding-left: 0;
+}
+
+.sub-niche-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    background: #f1f5ff;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+@media (max-width: 900px) {
+    .niche-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sub-niche-panel {
+        position: relative;
+        top: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
 .card,
 .niche-card {
     position: relative;
@@ -299,11 +386,13 @@ section h3 {
 
 .niche-filter {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    margin: 10px 0 22px; /* ↓ tighter vertical spacing */
+    margin: 10px 0 22px;
     gap: 12px;
+    padding-left: 60px;
 }
+
 
 
 .filter-box {
@@ -805,3 +894,5 @@ button:hover {
     opacity: 0.6;
     pointer-events: none;
 }
+
+

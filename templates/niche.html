@@ -4,47 +4,70 @@
 <section class="page-header">
     <h1>{{ niche | capitalize }} Trends</h1>
 </section>
-<div class="niche-filter">
-    <div class="filter-box">
 
-        <div class="filter-row">
-            <label for="priceFilter">Sort by price</label>
-            <select id="priceFilter">
-                <option value="">Default</option>
-                <option value="low-high">Low → High</option>
-                <option value="high-low">High → Low</option>
-            </select>
+<div class="niche-layout">
+
+    <!-- SUB NICHE SIDEBAR -->
+    <aside class="sub-niche-panel">
+        {% for s in sub_niches %}
+        <a href="/niche/{{ niche }}?sub={{ s }}"
+           class="{% if s == active_sub %}active{% endif %}">
+            {{ s | capitalize }}
+        </a>
+        {% endfor %}
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="niche-main">
+
+        <!-- FILTER -->
+        <div class="niche-filter">
+            <div class="filter-box">
+
+                <div class="filter-row">
+                    <label for="priceFilter">Sort by price</label>
+                    <select id="priceFilter">
+                        <option value="">Default</option>
+                        <option value="low-high">Low → High</option>
+                        <option value="high-low">High → Low</option>
+                    </select>
+                </div>
+
+                <div class="filter-row range-row">
+                    <label>Price range</label>
+                    <input
+                        type="range"
+                        id="priceRange"
+                        min="0"
+                        max="100000"
+                        step="500"
+                        value="100000"
+                    >
+                    <span id="rangeValue">₹1,00,000+</span>
+                </div>
+
+            </div>
         </div>
 
-        <div class="filter-row range-row">
-            <label>Price range</label>
-            <<input type="range" id="priceRange" min="0" max="100000" step="500" value="100000">
-            <span id="rangeValue">Up to ₹1,00,000</span>
-        </div>
+        <!-- PRODUCTS -->
+        <section class="grid niche-products" id="productGrid">
+            {% for product in products %}
+            <div class="product-card">
+                <a href="/niche/{{ niche }}/{{ product.id }}" class="product-link">
+                    <img src="{{ product.image }}" alt="{{ product.title }}">
+                    <h4>{{ product.title }}</h4>
+                </a>
+                <p class="product-price">{{ product.price }}</p>
+            </div>
+            {% endfor %}
+        </section>
 
     </div>
 </div>
 
-
-<section class="grid" id="productGrid">
-    {% for product in products %}
-    <div class="product-card">
-        <a href="/niche/{{ niche }}/{{ product.id }}" class="product-link">
-            <img src="{{ product.image }}" alt="{{ product.title }}">
-            <h4>{{ product.title }}</h4>
-        </a>
-
-        <p class="product-price">{{ product.price }}</p>
-    </div>
-
-    {% endfor %}
-</section>
-
 <script>
 function extractPrice(text) {
-    return parseFloat(
-        text.replace(/[₹, ]/g, "")
-    ) || 0;
+    return parseFloat(text.replace(/[₹, ]/g, "")) || 0;
 }
 
 const grid = document.getElementById("productGrid");
@@ -58,42 +81,30 @@ document.getElementById("priceFilter").addEventListener("change", function () {
     cards.sort((a, b) => {
         const priceA = extractPrice(a.querySelector(".product-price").innerText);
         const priceB = extractPrice(b.querySelector(".product-price").innerText);
-
-        return mode === "low-high"
-            ? priceA - priceB
-            : priceB - priceA;
+        return mode === "low-high" ? priceA - priceB : priceB - priceA;
     });
 
     cards.forEach(card => grid.appendChild(card));
 });
 
+/* RANGE */
 const range = document.getElementById("priceRange");
 const rangeValue = document.getElementById("rangeValue");
-
 const MAX_PRICE = parseInt(range.max);
 
-/* INITIAL STATE */
-rangeValue.innerText = "₹1,00,000+";
-
-/* RANGE FILTER */
 range.addEventListener("input", function () {
     const maxPrice = parseInt(this.value);
 
-    if (maxPrice === MAX_PRICE) {
-        rangeValue.innerText = "₹1,00,000+";
-    } else {
-        rangeValue.innerText = `Up to ₹${maxPrice.toLocaleString("en-IN")}`;
-    }
+    rangeValue.innerText =
+        maxPrice === MAX_PRICE
+            ? "₹1,00,000+"
+            : `Up to ₹${maxPrice.toLocaleString("en-IN")}`;
 
     cards.forEach(card => {
-        const price = extractPrice(
-            card.querySelector(".product-price").innerText
-        );
-
+        const price = extractPrice(card.querySelector(".product-price").innerText);
         card.style.display = price <= maxPrice ? "block" : "none";
     });
 });
 </script>
-
 
 {% endblock %}

@@ -121,16 +121,47 @@ def update_niche_logo():
 # ---------------- NICHE PAGE ----------------
 @app.route("/niche/<name>")
 def niche(name):
+    sub = request.args.get("sub", "all")
+
     products = (
         supabase.table("products")
         .select("*")
         .eq("niche", name)
-        .eq("is_featured", False)
         .execute()
         .data
     )
 
-    return render_template("niche.html", niche=name, products=products)
+    if sub != "all":
+        products = [p for p in products if p.get("sub_niche") == sub]
+
+    sub_niches = (
+        supabase.table("sub_niches")
+        .select("name")
+        .eq("niche", name)
+        .execute()
+        .data
+    )
+
+    return render_template(
+        "niche.html",
+        niche=name,
+        products=products,
+        sub_niches=["all"] + [s["name"] for s in sub_niches],
+        active_sub=sub
+    )
+
+# @app.route("/niche/<name>")
+# def niche(name):
+#     products = (
+#         supabase.table("products")
+#         .select("*")
+#         .eq("niche", name)
+#         .eq("is_featured", False)
+#         .execute()
+#         .data
+#     )
+#
+#     return render_template("niche.html", niche=name, products=products)
 
 
 # ---------------- PRODUCT DETAIL PAGE ----------------
@@ -254,23 +285,32 @@ def admin_panel():
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
 
-    # fetch niches
+    # Fetch niches
     niches = supabase.table("niches").select("name, logo").execute().data
     niche_names = [n["name"] for n in niches]
 
-    # fetch products
+    # Fetch sub-niches
+    sub_data = supabase.table("sub_niches").select("niche, name").execute().data
+    sub_niches = {}
+
+    for s in sub_data:
+        sub_niches.setdefault(s["niche"], []).append(s["name"])
+
+    # Fetch products
     products = supabase.table("products").select("*").execute().data
 
-    # group products by niche (even if empty)
-    grouped = {niche: [] for niche in niche_names}
+    # Group products by niche
+    grouped = {n: [] for n in niche_names}
     for p in products:
         grouped.setdefault(p["niche"], []).append(p)
 
     return render_template(
         "admin_panel.html",
         products=grouped,
-        niches=niches
+        niches=niches,
+        sub_niches=sub_niches
     )
+
 
 
 # ---------------- ADD NICHE ----------------
@@ -468,7 +508,48 @@ def api_search():
 
 
 
+@app.route("/admin/add-sub-niche", methods=["POST"])
+def add_sub_niche():
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
 
+    supabase.table("sub_niches").insert({
+        "niche": request.form["niche"],
+        "name": slugify(request.form["sub_niche"])
+    }).execute()
+
+    return redirect("/admin/panel")
+
+
+@app.route("/admin/set-sub-niche", methods=["POST"])
+def set_sub_niche():
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
+
+    supabase.table("products").update({
+        "sub_niche": request.form["sub_niche"]
+    }).eq("id", request.form["product_id"]).execute()
+
+    return redirect("/admin/panel")
+
+
+@app.route("/admin/delete-sub-niche/<niche>/<sub>")
+def delete_sub_niche(niche, sub):
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
+
+    # Move products back to 'all'
+    supabase.table("products").update({
+        "sub_niche": "all"
+    }).eq("niche", niche).eq("sub_niche", sub).execute()
+
+    # Delete sub-niche
+    supabase.table("sub_niches").delete() \
+        .eq("niche", niche) \
+        .eq("name", sub) \
+        .execute()
+
+    return redirect("/admin/panel")
 
 
 # ---------------- LOGOUT ----------------

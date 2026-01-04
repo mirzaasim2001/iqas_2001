@@ -4,7 +4,7 @@
 <section class="admin-panel">
     <h1>Admin Panel</h1>
 
-    <!-- ADD NICHE -->
+    <!-- ================= ADD NICHE ================= -->
     <h3>Add New Niche</h3>
     <form method="post" action="/admin/add-niche">
         <input type="text" name="niche" placeholder="e.g. electronics" required>
@@ -12,21 +12,22 @@
         <button>Add Niche</button>
     </form>
 
-    <!-- MANAGE NICHES -->
+    <!-- ================= MANAGE NICHES ================= -->
     <h3>Manage Niches</h3>
+
     {% for niche in niches %}
     <div class="admin-niche">
 
         <strong>{{ niche.name | capitalize }}</strong>
 
-        <!-- RENAME -->
+        <!-- RENAME NICHE -->
         <form method="post" action="/admin/edit-niche" class="inline-form">
             <input type="hidden" name="old_niche" value="{{ niche.name }}">
             <input type="text" name="new_niche" placeholder="Rename niche" required>
             <button>Rename</button>
         </form>
 
-        <!-- LOGO URL -->
+        <!-- UPDATE NICHE LOGO -->
         <form method="post" action="/admin/update-niche-logo" class="inline-form">
             <input type="hidden" name="niche" value="{{ niche.name }}">
             <input
@@ -38,20 +39,44 @@
             <button>Save Logo</button>
         </form>
 
-        <!-- DELETE -->
+        <!-- ADD SUB NICHE -->
+        <form method="post" action="/admin/add-sub-niche" class="inline-form">
+            <input type="hidden" name="niche" value="{{ niche.name }}">
+            <input type="text" name="sub_niche" placeholder="e.g. phone" required>
+            <button>Add Sub-Niche</button>
+        </form>
+
+        <!-- EXISTING SUB NICHES + DELETE -->
+        {% if sub_niches.get(niche.name) %}
+        <ul class="sub-niche-list">
+            {% for sn in sub_niches[niche.name] %}
+            <li>
+                {{ sn | capitalize }}
+                <a
+                    href="/admin/delete-sub-niche/{{ niche.name }}/{{ sn }}"
+                    class="danger"
+                    onclick="return confirm('Delete sub-niche? Products will move to All.')"
+                >
+                    ✕
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <!-- DELETE NICHE -->
         <a
             href="/admin/delete-niche/{{ niche.name }}"
             class="danger"
             onclick="return confirm('Delete niche only if empty?')"
         >
-            Delete
+            Delete Niche
         </a>
 
     </div>
     {% endfor %}
 
-
-    <!-- MANAGE PRODUCTS -->
+    <!-- ================= MANAGE PRODUCTS ================= -->
     <h3>Manage Products by Niche</h3>
 
     {% for niche, items in products.items() %}
@@ -59,28 +84,45 @@
 
         <h4>{{ niche | capitalize }}</h4>
 
-        <!-- ADD PRODUCT FORM -->
+        <!-- ADD PRODUCT -->
         <form method="post" action="/admin/add-product" class="inline-add-form">
             <input type="hidden" name="niche" value="{{ niche }}">
-
             <input type="text" name="title" placeholder="Product title" required>
             <input type="text" name="price" placeholder="Price" required>
             <input type="text" name="image" placeholder="Main Image URL" required>
             <input type="text" name="link" placeholder="Affiliate link" required>
-
             <button>Add Product</button>
         </form>
 
         {% if items %}
             {% for product in items %}
             <div class="admin-product">
+
                 <img src="{{ product.image }}" alt="">
 
                 <div class="admin-product-info">
                     <strong>{{ product.title }}</strong>
                     <p>{{ product.price }}</p>
 
-                    <!-- FEATURE TOGGLE -->
+                    <!-- ASSIGN SUB NICHE -->
+                    <form method="post" action="/admin/set-sub-niche">
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <select name="sub_niche" onchange="this.form.submit()">
+                            <option value="all" {% if product.sub_niche == "all" %}selected{% endif %}>
+                                All
+                            </option>
+
+                            {% for sn in sub_niches.get(niche, []) %}
+                                <option value="{{ sn }}"
+                                    {% if product.sub_niche == sn %}selected{% endif %}>
+                                    {{ sn | capitalize }}
+                                </option>
+                            {% endfor %}
+                        </select>
+
+                    </form>
+
+                    <!-- FEATURE -->
                     <a href="/admin/toggle-feature/{{ product.id }}">
                         {% if product.is_featured %}
                             ⭐ Unfeature
@@ -93,16 +135,19 @@
                         Edit Full Details
                     </a>
 
-                    <a href="/admin/delete-product/{{ niche }}/{{ product.id }}"
-                       class="danger"
-                       onclick="return confirm('Delete this product?')">
-                       Delete
+                    <a
+                        href="/admin/delete-product/{{ niche }}/{{ product.id }}"
+                        class="danger"
+                        onclick="return confirm('Delete this product?')"
+                    >
+                        Delete
                     </a>
                 </div>
+
             </div>
             {% endfor %}
         {% else %}
-            <p class="muted">No products yet. Add one above.</p>
+            <p class="muted">No products yet.</p>
         {% endif %}
 
     </div>
