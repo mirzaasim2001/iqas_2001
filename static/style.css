@@ -896,3 +896,50 @@ button:hover {
 }
 
 
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 35px 0;
+    justify-content: flex-start;
+    padding-left: 75px;
+    font-size: 14px;
+}
+
+.pagination-title {
+    margin-right: 12px;
+    font-weight: 700;
+    color: #2563eb;    /* same blue as active */
+    font-size: 15px;
+}
+
+.pagination button {
+    min-width: 42px;              /* bigger button */
+    height: 42px;                 /* bigger button */
+    display: flex;                /* 🔑 center content */
+    align-items: center;          /* vertical center */
+    justify-content: center;      /* horizontal center */
+    border-radius: 8px;
+    border: 1px solid #d0d0d0;
+    background: #fff;
+    color: #000;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pagination button:hover {
+    background: #f2f2f2;
+}
+
+.pagination button.active {
+    background: #2563eb;         /* BLUE (Tailwind-style UI blue) */
+    color: #fff;
+    border-color: #2563eb;
+}
+
+.pagination button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}

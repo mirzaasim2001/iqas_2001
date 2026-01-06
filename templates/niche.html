@@ -61,19 +61,84 @@
             </div>
             {% endfor %}
         </section>
+        <div id="pagination" class="pagination"></div>
+
 
     </div>
 </div>
 
 <script>
+const PRODUCTS_PER_PAGE = 9;
+let currentPage = 1;
+
 function extractPrice(text) {
     return parseFloat(text.replace(/[₹, ]/g, "")) || 0;
 }
 
 const grid = document.getElementById("productGrid");
-const cards = Array.from(grid.children);
+let cards = Array.from(grid.children);
+const pagination = document.getElementById("pagination");
 
-/* SORT */
+/* ---------------- PAGINATION ---------------- */
+
+function showPage(page) {
+    currentPage = page;
+
+    const start = (page - 1) * PRODUCTS_PER_PAGE;
+    const end = page * PRODUCTS_PER_PAGE;
+
+    cards.forEach((card, index) => {
+        card.style.display =
+            index >= start && index < end ? "block" : "none";
+    });
+
+    renderPagination();
+
+    // 🔽 Scroll to top of products
+    document.getElementById("productGrid")
+        .scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+
+function renderPagination() {
+    pagination.innerHTML = "";
+
+    const totalPages = Math.ceil(cards.length / PRODUCTS_PER_PAGE);
+
+    // Title
+    const title = document.createElement("span");
+    title.className = "pagination-title";
+    title.innerText = "Page";
+    pagination.appendChild(title);
+
+    // Previous button
+    const prevBtn = document.createElement("button");
+    prevBtn.innerHTML = "←";
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.onclick = () => showPage(currentPage - 1);
+    pagination.appendChild(prevBtn);
+
+    // Page numbers (always at least 1)
+    for (let i = 1; i <= Math.max(totalPages, 1); i++) {
+        const btn = document.createElement("button");
+        btn.innerText = i;
+        btn.classList.toggle("active", i === currentPage);
+        btn.onclick = () => showPage(i);
+        pagination.appendChild(btn);
+    }
+
+    // Next button
+    const nextBtn = document.createElement("button");
+    nextBtn.innerHTML = "→";
+    nextBtn.disabled = currentPage === totalPages || totalPages === 1;
+    nextBtn.onclick = () => showPage(currentPage + 1);
+    pagination.appendChild(nextBtn);
+}
+
+
+
+/* ---------------- SORT ---------------- */
+
 document.getElementById("priceFilter").addEventListener("change", function () {
     const mode = this.value;
     if (!mode) return;
@@ -85,9 +150,11 @@ document.getElementById("priceFilter").addEventListener("change", function () {
     });
 
     cards.forEach(card => grid.appendChild(card));
+    showPage(1); // reset to page 1 after sort
 });
 
-/* RANGE */
+/* ---------------- RANGE FILTER ---------------- */
+
 const range = document.getElementById("priceRange");
 const rangeValue = document.getElementById("rangeValue");
 const MAX_PRICE = parseInt(range.max);
@@ -100,11 +167,21 @@ range.addEventListener("input", function () {
             ? "₹1,00,000+"
             : `Up to ₹${maxPrice.toLocaleString("en-IN")}`;
 
-    cards.forEach(card => {
+    cards = Array.from(grid.children).filter(card => {
+        const price = extractPrice(card.querySelector(".product-price").innerText);
+        return price <= maxPrice;
+    });
+
+    Array.from(grid.children).forEach(card => {
         const price = extractPrice(card.querySelector(".product-price").innerText);
         card.style.display = price <= maxPrice ? "block" : "none";
     });
+
+    showPage(1);
 });
+
+/* ---------------- INITIAL LOAD ---------------- */
+showPage(1);
 </script>
 
 {% endblock %}
