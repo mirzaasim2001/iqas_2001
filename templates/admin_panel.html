@@ -3,7 +3,6 @@
 
 <section class="admin-panel">
     <h1>Admin Panel</h1>
-
     <!-- ================= ADD NICHE ================= -->
     <h3>Add New Niche</h3>
     <form method="post" action="/admin/add-niche">
@@ -154,6 +153,14 @@
     {% endfor %}
 
     <a class="logout" href="/logout">Logout</a>
+    <form method="post" action="/admin/update-prices" style="margin-top: 50px;;">
+        <button type="submit"
+                onclick="return confirm('Update prices for all products now?')">
+            🔄 Update All Product Prices
+        </button>
+    </form>
 </section>
+
+
 
 {% endblock %}

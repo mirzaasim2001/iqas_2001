@@ -3,6 +3,8 @@ from config import SECRET_KEY, ADMIN_USERNAME, ADMIN_PASSWORD
 from supabase import create_client
 import os
 from dotenv import load_dotenv
+from utils.amazon_price import get_amazon_price
+
 load_dotenv()
 
 
@@ -549,6 +551,38 @@ def delete_sub_niche(niche, sub):
         .eq("name", sub) \
         .execute()
 
+    return redirect("/admin/panel")
+
+
+
+@app.route("/admin/update-prices", methods=["POST"])
+def update_prices():
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
+
+    products = (
+        supabase.table("products")
+        .select("id, link, price")
+        .execute()
+        .data
+    )
+
+    updated = 0
+
+    for p in products:
+        if not p.get("link"):
+            continue
+
+        new_price = get_amazon_price(p["link"])
+
+        if new_price and new_price != p["price"]:
+            supabase.table("products").update({
+                "price": new_price
+            }).eq("id", p["id"]).execute()
+
+            updated += 1
+
+    flash(f"✅ Prices updated successfully ({updated} products changed)")
     return redirect("/admin/panel")
 
 
