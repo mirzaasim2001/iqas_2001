@@ -1377,3 +1377,119 @@ button:hover {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+/* ======================================
+   FEATURED SLIDER – NEON GLOW UPGRADE
+   ====================================== */
+
+.slider-card {
+    background: linear-gradient(
+        180deg,
+        rgba(2, 6, 23, 0.92),
+        rgba(11, 18, 36, 0.95)
+    );
+    border-radius: 22px;
+    border: 1px solid rgba(59,130,246,0.35);
+    box-shadow:
+        0 0 25px rgba(59,130,246,0.30),
+        0 0 45px rgba(239,68,68,0.22);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Soft ambient neon glow */
+.slider-card::before {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    background: radial-gradient(
+        circle,
+        rgba(59,130,246,0.18),
+        rgba(239,68,68,0.12),
+        transparent 65%
+    );
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+/* Hover = boost glow only (no layout shift) */
+.slider-card:hover {
+    box-shadow:
+        0 0 40px rgba(59,130,246,0.55),
+        0 0 65px rgba(239,68,68,0.45);
+}
+
+/* Product image polish */
+.slider-card img {
+    background: #020617;
+    border-radius: 16px;
+    box-shadow:
+        inset 0 0 12px rgba(59,130,246,0.35);
+}
+
+/* Title glow */
+.slider-card h4 {
+    background: linear-gradient(
+        90deg,
+        var(--blue-primary),
+        var(--blue-accent)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Price glow */
+.slider-card p {
+    font-weight: 700;
+    background: linear-gradient(
+        90deg,
+        #60a5fa,
+        #f87171
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ======================================
+   BROWSE BY NICHE – NEON TEXT GLOW
+   ====================================== */
+
+/* Big niche text */
+.niches-section .niche-card h3 {
+    background: linear-gradient(
+        90deg,
+        var(--blue-primary),
+        var(--blue-accent)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    text-shadow:
+        0 0 12px rgba(59,130,246,0.45),
+        0 0 22px rgba(239,68,68,0.30);
+}
+
+/* Ambient glow halo */
+.niches-section .niche-card h3::after {
+    content: "";
+    position: absolute;
+    inset: -30%;
+    background: radial-gradient(
+        circle,
+        rgba(59,130,246,0.25),
+        rgba(239,68,68,0.18),
+        transparent 65%
+    );
+    opacity: 0.75;
+    filter: blur(22px);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Hover boost */
+.niches-section .niche-card:hover h3 {
+    text-shadow:
+        0 0 18px rgba(59,130,246,0.65),
+        0 0 35px rgba(239,68,68,0.50);
+}
