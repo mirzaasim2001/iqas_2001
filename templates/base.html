@@ -130,6 +130,29 @@ if (searchInput && searchResults) {
     });
 }
 </script>
+<script>
+let searchOpen = false;
+
+if (searchInput && searchResults) {
+
+    // When results are shown
+    const observer = new MutationObserver(() => {
+        searchOpen = searchResults.style.display === "block";
+    });
+
+    observer.observe(searchResults, {
+        attributes: true,
+        attributeFilter: ["style"]
+    });
+
+    // 🔻 CLOSE search when page scrolls
+    window.addEventListener("scroll", () => {
+        if (searchOpen) {
+            searchResults.style.display = "none";
+        }
+    }, { passive: true });
+}
+</script>
 
 </body>
 </html>
