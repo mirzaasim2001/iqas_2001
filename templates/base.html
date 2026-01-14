@@ -116,6 +116,20 @@ if (input) {
     });
 }
 </script>
+<script>
+const searchInput = document.getElementById("productSearch");
+const searchResults = document.getElementById("searchResults");
+
+if (searchInput && searchResults) {
+    searchInput.addEventListener("input", () => {
+        const rect = searchInput.getBoundingClientRect();
+
+        searchResults.style.top = `${rect.bottom + 8}px`;
+        searchResults.style.left = `${rect.left}px`;
+        searchResults.style.width = `${rect.width}px`;
+    });
+}
+</script>
 
 </body>
 </html>
