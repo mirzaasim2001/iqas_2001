@@ -29,19 +29,44 @@
 
 <!-- SEARCH PRODUCTS SECTION -->
 <section class="search-section">
-    <h2>Search Products</h2>
+    <div class="search-grid">
 
-    <div class="search-box">
-        <input
-            type="text"
-            id="productSearch"
-            placeholder="Search products..."
-            autocomplete="off"
-        />
+        <!-- SEARCH BOX -->
+        <div class="search-card">
+            <h2>Search Products</h2>
 
-        <div id="searchResults" class="search-results"></div>
+            <div class="search-box">
+                <input
+                    type="text"
+                    id="productSearch"
+                    placeholder="Search products..."
+                >
+                <div id="searchResults" class="search-results"></div>
+            </div>
+        </div>
+
+        <!-- BEST PRODUCT -->
+        <div class="search-card best-product-card">
+            <h2>Best Product</h2>
+
+            {% if best_product %}
+            <a href="/niche/{{ best_product.niche }}/{{ best_product.id }}"
+               class="best-product-inner">
+
+                <img src="{{ best_product.image }}" alt="">
+                <div>
+                    <h4>{{ best_product.title }}</h4>
+                    <p>{{ best_product.price }}</p>
+                </div>
+            </a>
+            {% else %}
+                <p class="muted">No featured product yet</p>
+            {% endif %}
+        </div>
+
     </div>
 </section>
+
 
 
 <!-- FEATURED SLIDER -->

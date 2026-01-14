@@ -118,8 +118,16 @@
                                 </option>
                             {% endfor %}
                         </select>
-
                     </form>
+
+                    <!-- BEST PRODUCT -->
+                    <a href="/admin/toggle-best/{{ product.id }}">
+                        {% if product.is_best %}
+                            🏆 Remove Best
+                        {% else %}
+                            🏆 Set as Best
+                        {% endif %}
+                    </a>
 
                     <!-- FEATURE -->
                     <a href="/admin/toggle-feature/{{ product.id }}">

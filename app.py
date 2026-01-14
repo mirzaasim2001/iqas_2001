@@ -5,8 +5,7 @@ import os
 from dotenv import load_dotenv
 #from utils.amazon_price import get_amazon_price
 import requests
-
-requests.post("https://amazon-price-worker.onrender.com")
+import re
 
 load_dotenv()
 
@@ -19,15 +18,13 @@ supabase = create_client(
     os.getenv("SUPABASE_KEY")
 )
 
-
-import re
-
 def tokenize(text):
     if not text:
         return set()
     text = text.lower()
     text = re.sub(r"[^\w\s]", "", text)
     return set(text.split())
+
 
 def similarity_score(title_a, title_b):
     a = tokenize(title_a)
@@ -57,10 +54,22 @@ def home():
         .data
     )
 
+    best_product = (
+        supabase.table("products")
+        .select("*")
+        .eq("is_best", True)
+        .limit(1)
+        .execute()
+        .data
+    )
+
+    best_product = best_product[0] if best_product else None
+
     return render_template(
         "home.html",
         niches=niches,
-        featured=featured
+        featured=featured,
+        best_product=best_product
     )
 
 
@@ -155,50 +164,7 @@ def niche(name):
         active_sub=sub
     )
 
-# @app.route("/niche/<name>")
-# def niche(name):
-#     products = (
-#         supabase.table("products")
-#         .select("*")
-#         .eq("niche", name)
-#         .eq("is_featured", False)
-#         .execute()
-#         .data
-#     )
-#
-#     return render_template("niche.html", niche=name, products=products)
 
-
-# ---------------- PRODUCT DETAIL PAGE ----------------
-# @app.route("/niche/<niche>/<product_id>")
-# def product_detail(niche, product_id):
-#     product = (
-#         supabase.table("products")
-#         .select("*")
-#         .eq("id", product_id)
-#         .single()
-#         .execute()
-#         .data
-#     )
-#
-#     if not product:
-#         return redirect("/")
-#
-#     images = []
-#
-#     if product.get("extra_image_1"):
-#         images.append(product["extra_image_1"])
-#     if product.get("extra_image_2"):
-#         images.append(product["extra_image_2"])
-#     if product.get("extra_image_3"):
-#         images.append(product["extra_image_3"])
-#
-#     return render_template(
-#         "product_detail.html",
-#         product=product,
-#         niche=niche,
-#         images=images
-#     )
 @app.route("/niche/<niche>/<product_id>")
 def product_detail(niche, product_id):
 
@@ -357,7 +323,8 @@ def add_product():
         "link": request.form["link"],
         "description": "",
         "extra_images": "",
-        "is_featured": False
+        "is_featured": False,
+        "is_best": False
     }).execute()
 
     return redirect("/admin/panel")
@@ -560,33 +527,29 @@ def delete_sub_niche(niche, sub):
 
 @app.route("/admin/update-prices", methods=["POST"])
 def update_prices():
+    requests.post("https://amazon-price-worker.onrender.com")
+    flash("Price update started")
+    return redirect("/admin/panel")
+
+
+@app.route("/admin/toggle-best/<product_id>")
+def toggle_best(product_id):
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
 
-    products = (
-        supabase.table("products")
-        .select("id, link, price")
-        .execute()
-        .data
-    )
+    # 1️⃣ Unset best only where it's currently true
+    supabase.table("products").update({
+        "is_best": False
+    }).eq("is_best", True).execute()
 
-    updated = 0
+    # 2️⃣ Set selected product as best
+    supabase.table("products").update({
+        "is_best": True
+    }).eq("id", product_id).execute()
 
-    for p in products:
-        if not p.get("link"):
-            continue
-
-        new_price = get_amazon_price(p["link"])
-
-        if new_price and new_price != p["price"]:
-            supabase.table("products").update({
-                "price": new_price
-            }).eq("id", p["id"]).execute()
-
-            updated += 1
-
-    flash(f"✅ Prices updated successfully ({updated} products changed)")
+    flash("Best product updated successfully")
     return redirect("/admin/panel")
+
 
 
 # ---------------- LOGOUT ----------------

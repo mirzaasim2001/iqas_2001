@@ -12,6 +12,16 @@
     --white: #ffffff;
 }
 
+:root {
+    /* existing vars stay */
+
+    --soft-panel: linear-gradient(
+        180deg,
+        rgba(15, 23, 42, 0.85),
+        rgba(2, 6, 23, 0.85)
+    );
+}
+
 /* RESET */
 * {
     margin: 0;
@@ -721,8 +731,8 @@ section h3 {
 
 /* Even slimmer rows */
 .niches-section .niche-card {
-    min-height: 140px;      /* ⬅ much slimmer */
-    margin-top: -6%;        /* ⬅ controlled overlap */
+    min-height: 80px;      /* ⬅ much slimmer */
+    margin-top: -2%;        /* ⬅ controlled overlap */
     border-radius: 18px;    /* sharper rectangle */
 }
 
@@ -764,7 +774,7 @@ section h3 {
 
 /* Reduce overall row height further */
 .niches-section .niche-card {
-    min-height: 180px;          /* ⬅ slimmer rectangle */
+    min-height: 100px;          /* ⬅ slimmer rectangle */
 }
 
 /* Tighter text block */
@@ -1016,29 +1026,31 @@ button:hover {
 }
 
 .search-box input {
-    width: 100%;
-    padding: 16px 20px;
-    border-radius: 14px;
-    border: 1px solid var(--blue-border);
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid rgba(0,0,0,0.15);
     font-size: 16px;
-    outline: none;
-    background: #020617;
-    color: var(--text-main);
+    font-weight: 500;
 }
+
+.search-box input::placeholder {
+    color: #6b7280; /* soft gray */
+}
+
 
 .search-results {
     position: absolute;
     top: 110%;
     left: 0;
     right: 0;
-    background: #020617;
+    background: #ffffff;
     border-radius: 14px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.85);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.25);
     overflow: hidden;
     display: none;
     z-index: 999;
-    border: 1px solid var(--blue-border);
 }
+
 
 .search-item {
     display: flex;
@@ -1052,22 +1064,27 @@ button:hover {
 }
 
 .search-item:hover {
-    background: rgba(59,130,246,0.12);
+    background: #f3f4f6;
 }
+
 
 .search-item img {
     width: 42px;
     height: 42px;
     object-fit: contain;
     border-radius: 8px;
-    background: #020617;
+    background: #ffffff;
 }
+
 
 .no-result {
     padding: 14px;
     text-align: center;
-    color: var(--text-muted);
+    color: #374151;
+    font-weight: 500;
 }
+
+
 
 /* =======================
    SHARED SECTION BOX UI
@@ -1109,6 +1126,68 @@ button:hover {
     opacity: 0.6;
     pointer-events: none;
 }
+
+
+.search-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.search-card {
+    background: var(--soft-panel);
+    border-radius: 28px;
+    padding: 40px;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.best-product-card {
+    background: var(--soft-panel);
+    border-radius: 28px;
+    padding: 40px;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.best-product-inner {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    text-decoration: none;
+    color: white;
+    margin-top: 18px;
+}
+
+.best-product-inner img {
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+    background: #020617;
+    border-radius: 18px;
+    padding: 10px;
+}
+
+.best-product-inner h4 {
+    font-size: 16px;
+    line-height: 1.4;
+    font-weight: 700;
+}
+
+.best-product-inner p {
+    margin-top: 6px;
+    font-size: 18px;
+    font-weight: 800;
+    color: #60a5fa;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+    .search-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 
 /* ---------------- PAGINATION ---------------- */
 
@@ -1162,4 +1241,139 @@ button:hover {
 .pagination button:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+}
+
+
+
+
+/* 🔍 SEARCH – FORCE BLACK TEXT ON WHITE */
+
+.search-results,
+.search-results * {
+    color: #000000 !important;
+}
+
+.search-item span,
+.search-item h4,
+.search-item p {
+    color: #000000 !important;
+    font-weight: 500;
+}
+
+
+
+/* ==============================
+   SEARCH + BEST PRODUCT – NEON
+   ============================== */
+
+/* Shared neon glass look */
+.search-card,
+.best-product-card {
+    background: linear-gradient(
+        180deg,
+        rgba(2, 6, 23, 0.92),
+        rgba(11, 18, 36, 0.95)
+    );
+    border-radius: 28px;
+    border: 1px solid rgba(59,130,246,0.35);
+    box-shadow:
+        0 0 35px rgba(59,130,246,0.35),
+        0 0 55px rgba(239,68,68,0.25);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Soft neon glow layer */
+.search-card::before,
+.best-product-card::before {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    background: radial-gradient(
+        circle,
+        rgba(59,130,246,0.18),
+        rgba(239,68,68,0.12),
+        transparent 65%
+    );
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+/* Section titles inside */
+.search-card h2,
+.best-product-card h2 {
+    background: linear-gradient(
+        90deg,
+        var(--blue-primary),
+        var(--blue-accent)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ---------------- SEARCH INPUT ---------------- */
+
+.search-box input {
+    background: #ffffff;
+    color: #000000;
+    border-radius: 14px;
+    border: 2px solid transparent;
+    box-shadow:
+        0 0 0 1px rgba(59,130,246,0.45),
+        0 0 18px rgba(59,130,246,0.35);
+    font-weight: 600;
+}
+
+/* Input focus = neon pop */
+.search-box input:focus {
+    outline: none;
+    box-shadow:
+        0 0 0 2px rgba(59,130,246,0.85),
+        0 0 30px rgba(239,68,68,0.35);
+}
+
+/* ---------------- SEARCH RESULTS ---------------- */
+
+.search-results {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid rgba(59,130,246,0.35);
+    box-shadow:
+        0 30px 80px rgba(0,0,0,0.85),
+        0 0 35px rgba(59,130,246,0.35);
+}
+
+/* FORCE readable text */
+.search-results,
+.search-results * {
+    color: #000000 !important;
+}
+
+/* Hover */
+.search-item:hover {
+    background: #e5e7eb;
+}
+
+/* ---------------- BEST PRODUCT ---------------- */
+
+.best-product-inner {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.best-product-inner:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 0 30px rgba(59,130,246,0.45),
+        0 0 45px rgba(239,68,68,0.35);
+}
+
+/* Price glow */
+.best-product-inner p {
+    background: linear-gradient(
+        90deg,
+        #60a5fa,
+        #f87171
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
