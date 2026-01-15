@@ -284,34 +284,98 @@ section h3 {
 
 .niche-layout {
     display: grid;
-    grid-template-columns: 220px 1fr;
+    grid-template-columns: 260px 1fr;
     gap: 40px;
-    align-items: start;
+    align-items: stretch;   /* 🔑 sidebar matches content height */
 }
+
+/* NICHE PAGE – full width layout */
+.niche-layout {
+    max-width: none;
+    margin: 0;
+}
+
+.niche-layout {
+    margin-top: -140px; /* equals header visual height */
+    padding-top: 140px; /* keeps content readable */
+}
+
+
+.niche-main {
+    padding-top: 40px;
+}
+
+
+.page-header {
+    text-align: center;
+    padding: 70px 60px 40px;
+}
+
+
+.page-header {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    padding: 60px 60px 40px;
+    pointer-events: none; /* purely visual */
+}
+
 
 /* LEFT SIDEBAR */
 .sub-niche-panel {
     background: linear-gradient(180deg, #020617, #0b1220);
-    border-radius: 18px;
-    padding: 18px 14px;
+    padding: 32px 22px;
+
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    box-shadow: 0 20px 45px rgba(59,130,246,0.25);
-    position: sticky;
-    top: 120px;
-    border: 1px solid var(--blue-border);
+    gap: 14px;
+
+    border-right: 1px solid var(--blue-border);
+    border-radius: 0;
+    box-shadow: none;
+
+    align-self: stretch;
+    overflow-y: auto;
+}
+
+.sub-niche-panel {
+    overflow-y: auto;   /* only triggers if content exceeds page */
 }
 
 /* LINKS */
 .sub-niche-panel a {
-    padding: 10px 14px;
-    border-radius: 12px;
+    padding: 12px 16px;
+    border-radius: 14px;
     text-decoration: none;
     font-weight: 600;
     color: var(--text-main);
-    transition: background 0.2s, transform 0.15s;
+    transition: background 0.2s ease, transform 0.15s ease;
 }
+
+@media (max-width: 900px) {
+    .sub-niche-panel {
+        position: relative;
+        height: auto;
+        flex-direction: row;
+        overflow-x: auto;
+        border-radius: 18px;
+    }
+}
+
+.sub-niche-panel a:hover {
+    background: rgba(59,130,246,0.18);
+    transform: translateX(6px);
+}
+
+.sub-niche-panel a.active {
+    background: linear-gradient(
+        135deg,
+        var(--blue-primary),
+        var(--blue-accent)
+    );
+    color: #ffffff;
+}
+
 
 /* HOVER */
 .sub-niche-panel a:hover {
