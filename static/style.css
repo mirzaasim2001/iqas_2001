@@ -505,7 +505,7 @@ section h3 {
 
 .page-header h1 {
     font-family: "Playfair Display", "Georgia", serif;
-    font-weight: 800;
+    font-weight: 900;
     letter-spacing: 0.6px;
     font-size: 55px;
     color: var(--text-main);
@@ -514,7 +514,7 @@ section h3 {
 /* Smaller, cleaner product page title */
 .product-header h1 {
     font-family: "Inter", "Segoe UI", system-ui, sans-serif;
-    font-size: 34px;
+    font-size: 39px;
     font-weight: 700;
     letter-spacing: 0.2px;
     line-height: 1.3;
@@ -1445,14 +1445,9 @@ button:hover {
 
 /* Title glow */
 .slider-card h4 {
-    background: linear-gradient(
-        90deg,
-        var(--blue-primary),
-        var(--blue-accent)
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: white;
 }
+
 
 /* Price glow */
 .slider-card p {
@@ -1472,18 +1467,14 @@ button:hover {
 
 /* Big niche text */
 .niches-section .niche-card h3 {
-    background: linear-gradient(
-        90deg,
-        var(--blue-primary),
-        var(--blue-accent)
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #ffffff;
+    background: none;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
     position: relative;
-    text-shadow:
-        0 0 12px rgba(59,130,246,0.45),
-        0 0 22px rgba(239,68,68,0.30);
+    text-shadow: none;
 }
+
 
 /* Ambient glow halo */
 .niches-section .niche-card h3::after {
