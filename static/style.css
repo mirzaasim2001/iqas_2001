@@ -31,13 +31,13 @@
 }
 
 body {
-    background:
-        radial-gradient(circle at top, rgba(59,130,246,0.10), transparent 45%),
-        radial-gradient(circle at bottom, rgba(239,68,68,0.08), transparent 45%),
-        #020617;
+    background: url("/static/hexa_bg.png") no-repeat center center fixed;
+    background-size: cover;
     color: var(--text-main);
     min-height: 100vh;
 }
+
+
 
 /* 🔒 Prevent unwanted horizontal scroll */
 html, body {
@@ -181,10 +181,11 @@ html, body {
 }
 
 .hero h1 {
-    font-size: 60px;
+    font-size: 70px;
     font-weight: 800;
     line-height: 1.1;
     max-width: 760px;
+
     background: linear-gradient(
         90deg,
         var(--blue-primary),
@@ -192,15 +193,28 @@ html, body {
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+
+    /* NEON GLOW */
+    text-shadow:
+        0 0 6px rgba(59,130,246,0.45),
+        0 0 16px rgba(59,130,246,0.30),
+        0 0 32px rgba(59,130,246,0.18);
 }
+
 
 .hero-desc {
     margin-top: 26px;
-    font-size: 19px;
-    color: var(--text-muted);
+    font-size: 22px;
     max-width: 760px;
     line-height: 1.7;
+
+    color: #2fffd5; /* neon greenish-blue */
+    text-shadow:
+        0 0 6px rgba(47, 255, 213, 0.55),
+        0 0 14px rgba(47, 255, 213, 0.35),
+        0 0 28px rgba(47, 255, 213, 0.15);
 }
+
 
 .hero-inner {
     display: flex;
@@ -230,9 +244,15 @@ html, body {
 .hero-slogan {
     font-size: 16px;
     font-weight: 600;
-    color: var(--blue-primary);
     letter-spacing: 0.4px;
+
+    color: #ff9ad5; /* light neon pink */
+    text-shadow:
+        0 0 4px rgba(255,154,213,0.6),
+        0 0 10px rgba(255,154,213,0.4),
+        0 0 22px rgba(255,154,213,0.2);
 }
+
 
 /* Responsive */
 @media (max-width: 900px) {
