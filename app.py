@@ -3,7 +3,6 @@ from config import SECRET_KEY, ADMIN_USERNAME, ADMIN_PASSWORD
 from supabase import create_client
 import os
 from dotenv import load_dotenv
-#from utils.amazon_price import get_amazon_price
 import requests
 import re
 
@@ -521,14 +520,6 @@ def delete_sub_niche(niche, sub):
         .eq("name", sub) \
         .execute()
 
-    return redirect("/admin/panel")
-
-
-
-@app.route("/admin/update-prices", methods=["POST"])
-def update_prices():
-    requests.post("https://amazon-price-worker.onrender.com")
-    flash("Price update started")
     return redirect("/admin/panel")
 
 
