@@ -764,10 +764,25 @@ section h3 {
     justify-content: center;
     font-size: 30px;
     font-weight: 800;
-    color: #ffffff;
     padding: 60px;
     text-align: center;
+
+    /* SAME NEON PINK GRADIENT */
+    background: linear-gradient(
+        90deg,
+        #ff6ad5,
+        #ff9de2
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* MATCHING NEON GLOW */
+    text-shadow:
+        0 0 5px rgba(255, 106, 213, 0.45),
+        0 0 14px rgba(255, 106, 213, 0.30),
+        0 0 28px rgba(255, 106, 213, 0.20);
 }
+
 
 /* IMAGE SIDE */
 .niches-section .niche-card .niche-logo {
@@ -1570,38 +1585,40 @@ button:hover {
 
 /* Big niche text */
 .niches-section .niche-card h3 {
-    color: #ffffff;
-    background: none;
-    -webkit-background-clip: unset;
-    -webkit-text-fill-color: unset;
-    position: relative;
-    text-shadow: none;
+    background: linear-gradient(
+        90deg,
+        var(--neon-primary),
+        var(--neon-accent)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* SHARP NEON EDGE GLOW */
+    text-shadow:
+        0 0 1px rgba(255,255,255,0.9),     /* crisp edge */
+        0 0 3px rgba(255,106,213,0.85),    /* inner neon */
+        0 0 6px rgba(255,106,213,0.65),    /* controlled glow */
+        0 0 10px rgba(255,106,213,0.35);   /* outer halo (still sharp) */
 }
+
 
 
 /* Ambient glow halo */
-.niches-section .niche-card h3::after {
-    content: "";
-    position: absolute;
-    inset: -30%;
-    background: radial-gradient(
-        circle,
-        rgba(59,130,246,0.25),
-        rgba(239,68,68,0.18),
-        transparent 65%
-    );
-    opacity: 0.75;
-    filter: blur(22px);
-    z-index: -1;
-    pointer-events: none;
+.niches-section .niche-card h3 {
+    transition:
+        transform 0.25s ease,
+        text-shadow 0.25s ease;
 }
 
-/* Hover boost */
 .niches-section .niche-card:hover h3 {
+    transform: scale(1.08);   /* BIGGER instead of blur */
+
     text-shadow:
-        0 0 18px rgba(59,130,246,0.65),
-        0 0 35px rgba(239,68,68,0.50);
+        0 0 1px rgba(255,255,255,1),     /* crisp edge */
+        0 0 4px rgba(255,106,213,0.9),   /* inner neon */
+        0 0 8px rgba(255,106,213,0.55);  /* tight glow */
 }
+
 
 .search-section {
     position: relative;
