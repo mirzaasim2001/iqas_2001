@@ -67,10 +67,11 @@
         <a
             href="/admin/delete-niche/{{ niche.name }}"
             class="danger"
-            onclick="return confirm('Delete niche only if empty?')"
+            onclick="return confirmDeleteNiche('{{ niche.name }}')"
         >
             Delete Niche
         </a>
+
 
     </div>
     {% endfor %}
@@ -163,6 +164,24 @@
     <a class="logout" href="/logout">Logout</a>
 
 </section>
+<script>
+function confirmDeleteNiche(nicheName) {
+    const input = prompt(
+        "⚠️ This action is irreversible.\n\nType 'delete' to permanently delete the niche: " + nicheName
+    );
+
+    if (input === null) {
+        return false; // user cancelled
+    }
+
+    if (input.trim().toLowerCase() !== "delete") {
+        alert("Deletion cancelled. You must type 'delete' exactly.");
+        return false;
+    }
+
+    return true; // allow deletion
+}
+</script>
 
 
 

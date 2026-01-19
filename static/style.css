@@ -186,20 +186,22 @@ html, body {
     line-height: 1.1;
     max-width: 760px;
 
+    /* NEON PINK GRADIENT */
     background: linear-gradient(
         90deg,
-        var(--blue-primary),
-        var(--blue-accent)
+        #ff6ad5,   /* soft neon pink */
+        #ff9de2    /* light pink glow */
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 
-    /* NEON GLOW */
+    /* NEON PINK GLOW */
     text-shadow:
-        0 0 6px rgba(59,130,246,0.45),
-        0 0 16px rgba(59,130,246,0.30),
-        0 0 32px rgba(59,130,246,0.18);
+        0 0 6px rgba(255, 106, 213, 0.55),
+        0 0 18px rgba(255, 106, 213, 0.35),
+        0 0 36px rgba(255, 106, 213, 0.22);
 }
+
 
 .hero-glass {
     max-width: 820px;
@@ -744,7 +746,7 @@ section h3 {
 .niches-section .niche-card {
     display: grid;
     grid-template-columns: 1fr 1fr;   /* text | image */
-    min-height: 280px;
+    min-height: 200px;
     width: 100%;
     background: linear-gradient(145deg, #020617, #0b1220);
     border-radius: 28px;
@@ -874,7 +876,7 @@ section h3 {
 
 /* Reduce overall row height further */
 .niches-section .niche-card {
-    min-height: 100px;          /* ⬅ slimmer rectangle */
+    min-height: 80px;          /* ⬅ slimmer rectangle */
 }
 
 /* Tighter text block */
@@ -886,7 +888,7 @@ section h3 {
 
 /* Tighter image side */
 .niches-section .niche-card .niche-logo {
-    padding: 20px;
+    padding: 12px;
 }
 
 /* Slightly reduce corner radius for rectangle feel */
