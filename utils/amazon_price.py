@@ -50,7 +50,7 @@ def get_amazon_price(url):
 
     try:
         driver.get(url)
-        time.sleep(6)  # let Amazon fully load
+        time.sleep(20)  # let Amazon fully load
 
         # 🔴 Deal price
         try:
