@@ -1920,6 +1920,6 @@ button:hover {
 @media (max-width: 768px) {
     .search-results {
         left: 50%;
-        transform: translateX(-50%);
+        transform: translateX(50%);
     }
 }
