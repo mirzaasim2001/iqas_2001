@@ -2103,3 +2103,64 @@ button:hover {
     }
 }
 
+
+/* =====================================================
+   📱 MOBILE FIX – PRODUCT DETAILS GRID (INLINE OVERRIDE)
+   ===================================================== */
+@media (max-width: 768px) {
+
+    /* 🔥 OVERRIDE INLINE GRID (THIS IS THE KEY) */
+    section > .grid[style] {
+        grid-template-columns: 1fr !important;
+        justify-items: center;
+        text-align: center;
+        gap: 28px;
+    }
+
+    /* ---------- IMAGE ---------- */
+    section > .grid[style] img {
+        max-width: 320px;
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+        object-fit: contain;
+    }
+
+    /* ---------- PRODUCT INFO COLUMN ---------- */
+    section > .grid[style] > div {
+        width: 100%;
+        max-width: 520px;
+        margin: 0 auto;
+    }
+
+    /* ---------- PRICE ---------- */
+    section > .grid[style] h2 {
+        text-align: center;
+        font-size: 22px;
+        margin-top: 10px;
+    }
+
+    /* ---------- DESCRIPTION ---------- */
+    section > .grid[style] p {
+        text-align: center;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    /* ---------- PURCHASE BUTTON ---------- */
+    section > .grid[style] a {
+        display: flex;
+        justify-content: center;
+    }
+
+    section > .grid[style] button {
+        width: 100%;
+        max-width: 320px;
+        margin: 18px auto 0;
+        padding: 16px;
+        font-size: 16px;
+        border-radius: 30px;
+    }
+}
+
