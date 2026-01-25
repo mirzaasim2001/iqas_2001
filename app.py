@@ -91,17 +91,17 @@ def delete_niche(niche):
     # block deletion if products exist
     if count > 0:
         flash("Delete all products in this niche first.")
-        return redirect("/admin/panel")
+        return redirect("/admin/iqra928374asimsecret")
 
     # safe to delete niche
     supabase.table("niches").delete().eq("name", niche).execute()
 
-    return redirect("/admin/panel")
+    return redirect("/admin/iqra928374asimsecret")
 
 
 
 # ---------------- EDIT NICHE ----------------
-@app.route("/admin/edit-niche", methods=["POST"])
+@app.route("/admin/iqra928374asimsecret/edit-niche", methods=["POST"])
 def edit_niche():
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
@@ -112,11 +112,11 @@ def edit_niche():
     supabase.table("niches").update({"name": new}).eq("name", old).execute()
     supabase.table("products").update({"niche": new}).eq("niche", old).execute()
 
-    return redirect("/admin/panel")
+    return redirect("/admin/iqra928374asimsecret")
 
 
 # ---------------- UPDATE NICHE LOGO ----------------
-@app.route("/admin/update-niche-logo", methods=["POST"])
+@app.route("/admin/iqra928374asimsecret/update-niche-logo", methods=["POST"])
 def update_niche_logo():
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
@@ -128,7 +128,7 @@ def update_niche_logo():
         "logo": logo
     }).eq("name", niche).execute()
 
-    return redirect("/admin/panel")
+    return redirect("/admin/iqra928374asimsecret")
 
 
 # ---------------- NICHE PAGE ----------------
@@ -244,13 +244,13 @@ def admin_login():
             request.form["password"] == ADMIN_PASSWORD
         ):
             session["admin"] = ADMIN_USERNAME
-            return redirect("/admin/panel")
+            return redirect("/admin/iqra928374asimsecret")
 
     return render_template("admin_login.html")
 
 
 # ---------------- ADMIN PANEL ----------------
-@app.route("/admin/panel")
+@app.route("/admin/iqra928374asimsecret")
 def admin_panel():
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
@@ -291,7 +291,7 @@ def slugify(text):
     return re.sub(r'[^a-z0-9]+', '-', text.lower()).strip('-')
 
 
-@app.route("/admin/add-niche", methods=["POST"])
+@app.route("/admin/iqra928374asimsecret/add-niche", methods=["POST"])
 def add_niche():
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
@@ -304,12 +304,12 @@ def add_niche():
         "logo": request.form.get("logo")
     }).execute()
 
-    return redirect("/admin/panel")
+    return redirect("/admin/iqra928374asimsecret")
 
 
 
 # ---------------- ADD PRODUCT ----------------
-@app.route("/admin/add-product", methods=["POST"])
+@app.route("/admin/iqra928374asimsecret/add-product", methods=["POST"])
 def add_product():
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
@@ -326,13 +326,13 @@ def add_product():
         "is_best": False
     }).execute()
 
-    return redirect("/admin/panel")
+    return redirect("/admin/iqra928374asimsecret")
 
 
 
 
 # ---------------- TOGGLE FEATURE ----------------
-@app.route("/admin/toggle-feature/<product_id>")
+@app.route("/admin/iqra928374asimsecret/toggle-feature/<product_id>")
 def toggle_feature(product_id):
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
@@ -350,7 +350,7 @@ def toggle_feature(product_id):
         "is_featured": not product["is_featured"]
     }).eq("id", product_id).execute()
 
-    return redirect("/admin/panel")
+    return redirect("/admin/iqra928374asimsecret")
 
 # # ---------------- FEATURE PRODUCT ----------------
 # @app.route("/admin/feature", methods=["POST"])
@@ -373,17 +373,17 @@ def toggle_feature(product_id):
 
 
 # ---------------- DELETE PRODUCT ----------------
-@app.route("/admin/delete-product/<niche>/<product_id>")
+@app.route("/admin/iqra928374asimsecret/delete-product/<niche>/<product_id>")
 def delete_product(niche, product_id):
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
 
     supabase.table("products").delete().eq("id", product_id).execute()
-    return redirect("/admin/panel")
+    return redirect("/admin/iqra928374asimsecret")
 
 
 # ---------------- EDIT PRODUCT ----------------
-@app.route("/admin/edit-product/<niche>/<product_id>", methods=["GET", "POST"])
+@app.route("/admin/iqra928374asimsecret/edit-product/<niche>/<product_id>", methods=["GET", "POST"])
 def edit_product(niche, product_id):
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
@@ -410,7 +410,7 @@ def edit_product(niche, product_id):
             "extra_image_3": request.form.get("extra_image_3") or None,
         }).eq("id", product_id).execute()
 
-        return redirect("/admin/panel")
+        return redirect("/admin/iqra928374asimsecret")
 
     return render_template(
         "edit_product.html",
@@ -479,7 +479,7 @@ def api_search():
 
 
 
-@app.route("/admin/add-sub-niche", methods=["POST"])
+@app.route("/admin/iqra928374asimsecret/add-sub-niche", methods=["POST"])
 def add_sub_niche():
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
@@ -489,10 +489,10 @@ def add_sub_niche():
         "name": slugify(request.form["sub_niche"])
     }).execute()
 
-    return redirect("/admin/panel")
+    return redirect("/admin/iqra928374asimsecret")
 
 
-@app.route("/admin/set-sub-niche", methods=["POST"])
+@app.route("/admin/iqra928374asimsecret/set-sub-niche", methods=["POST"])
 def set_sub_niche():
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
@@ -501,10 +501,10 @@ def set_sub_niche():
         "sub_niche": request.form["sub_niche"]
     }).eq("id", request.form["product_id"]).execute()
 
-    return redirect("/admin/panel")
+    return redirect("/admin/iqra928374asimsecret")
 
 
-@app.route("/admin/delete-sub-niche/<niche>/<sub>")
+@app.route("/admin/iqra928374asimsecret/delete-sub-niche/<niche>/<sub>")
 def delete_sub_niche(niche, sub):
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
@@ -520,10 +520,10 @@ def delete_sub_niche(niche, sub):
         .eq("name", sub) \
         .execute()
 
-    return redirect("/admin/panel")
+    return redirect("/admin/iqra928374asimsecret")
 
 
-@app.route("/admin/toggle-best/<product_id>")
+@app.route("/admin/iqra928374asimsecret/toggle-best/<product_id>")
 def toggle_best(product_id):
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
@@ -539,7 +539,7 @@ def toggle_best(product_id):
     }).eq("id", product_id).execute()
 
     flash("Best product updated successfully")
-    return redirect("/admin/panel")
+    return redirect("/admin/iqra928374asimsecret")
 
 
 

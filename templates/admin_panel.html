@@ -5,7 +5,7 @@
     <h1>Admin Panel</h1>
     <!-- ================= ADD NICHE ================= -->
     <h3>Add New Niche</h3>
-    <form method="post" action="/admin/add-niche">
+    <form method="post" action="/admin/iqra928374asimsecret/add-niche">
         <input type="text" name="niche" placeholder="e.g. electronics" required>
         <input type="text" name="logo" placeholder="Niche Logo URL (optional)">
         <button>Add Niche</button>
@@ -20,14 +20,14 @@
         <strong>{{ niche.name | capitalize }}</strong>
 
         <!-- RENAME NICHE -->
-        <form method="post" action="/admin/edit-niche" class="inline-form">
+        <form method="post" action="/admin/iqra928374asimsecret/edit-niche" class="inline-form">
             <input type="hidden" name="old_niche" value="{{ niche.name }}">
             <input type="text" name="new_niche" placeholder="Rename niche" required>
             <button>Rename</button>
         </form>
 
         <!-- UPDATE NICHE LOGO -->
-        <form method="post" action="/admin/update-niche-logo" class="inline-form">
+        <form method="post" action="/admin/iqra928374asimsecret/update-niche-logo" class="inline-form">
             <input type="hidden" name="niche" value="{{ niche.name }}">
             <input
                 type="text"
@@ -39,7 +39,7 @@
         </form>
 
         <!-- ADD SUB NICHE -->
-        <form method="post" action="/admin/add-sub-niche" class="inline-form">
+        <form method="post" action="/admin/iqra928374asimsecret/add-sub-niche" class="inline-form">
             <input type="hidden" name="niche" value="{{ niche.name }}">
             <input type="text" name="sub_niche" placeholder="e.g. phone" required>
             <button>Add Sub-Niche</button>
@@ -52,7 +52,7 @@
             <li>
                 {{ sn | capitalize }}
                 <a
-                    href="/admin/delete-sub-niche/{{ niche.name }}/{{ sn }}"
+                    href="/admin/iqra928374asimsecret/delete-sub-niche/{{ niche.name }}/{{ sn }}"
                     class="danger"
                     onclick="return confirm('Delete sub-niche? Products will move to All.')"
                 >
@@ -65,7 +65,7 @@
 
         <!-- DELETE NICHE -->
         <a
-            href="/admin/delete-niche/{{ niche.name }}"
+            href="/admin/iqra928374asimsecret/delete-niche/{{ niche.name }}"
             class="danger"
             onclick="return confirmDeleteNiche('{{ niche.name }}')"
         >
@@ -85,7 +85,7 @@
         <h4>{{ niche | capitalize }}</h4>
 
         <!-- ADD PRODUCT -->
-        <form method="post" action="/admin/add-product" class="inline-add-form">
+        <form method="post" action="/admin/iqra928374asimsecret/add-product" class="inline-add-form">
             <input type="hidden" name="niche" value="{{ niche }}">
             <input type="text" name="title" placeholder="Product title" required>
             <input type="text" name="price" placeholder="Price" required>
@@ -105,7 +105,7 @@
                     <p>{{ product.price }}</p>
 
                     <!-- ASSIGN SUB NICHE -->
-                    <form method="post" action="/admin/set-sub-niche">
+                    <form method="post" action="/admin/iqra928374asimsecret/set-sub-niche">
                         <input type="hidden" name="product_id" value="{{ product.id }}">
                         <select name="sub_niche" onchange="this.form.submit()">
                             <option value="all" {% if product.sub_niche == "all" %}selected{% endif %}>
@@ -122,7 +122,7 @@
                     </form>
 
                     <!-- BEST PRODUCT -->
-                    <a href="/admin/toggle-best/{{ product.id }}">
+                    <a href="/admin/iqra928374asimsecret/toggle-best/{{ product.id }}">
                         {% if product.is_best %}
                             🏆 Remove Best
                         {% else %}
@@ -131,7 +131,7 @@
                     </a>
 
                     <!-- FEATURE -->
-                    <a href="/admin/toggle-feature/{{ product.id }}">
+                    <a href="/admin/iqra928374asimsecret/toggle-feature/{{ product.id }}">
                         {% if product.is_featured %}
                             ⭐ Unfeature
                         {% else %}
@@ -139,12 +139,12 @@
                         {% endif %}
                     </a>
 
-                    <a href="/admin/edit-product/{{ niche }}/{{ product.id }}">
+                    <a href="/admin/iqra928374asimsecret/edit-product/{{ niche }}/{{ product.id }}">
                         Edit Full Details
                     </a>
 
                     <a
-                        href="/admin/delete-product/{{ niche }}/{{ product.id }}"
+                        href="/admin/iqra928374asimsecret/delete-product/{{ niche }}/{{ product.id }}"
                         class="danger"
                         onclick="return confirm('Delete this product?')"
                     >
