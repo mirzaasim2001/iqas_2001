@@ -1923,3 +1923,88 @@ button:hover {
         transform: translateX(20%);
     }
 }
+
+
+/* =====================================================
+   📱 MOBILE FIX – PRODUCT DETAIL PAGE (NICHE PRODUCT)
+   ===================================================== */
+@media (max-width: 768px) {
+
+    /* ---------- PRODUCT HEADER (TITLE) ---------- */
+    .product-header h1 {
+        font-size: 26px;          /* ⬅ readable, not huge */
+        line-height: 1.25;
+        margin-bottom: 18px;
+        padding: 0 6px;
+        text-align: center;
+        word-break: break-word;  /* ⬅ handles very long titles */
+    }
+
+    /* ---------- PRODUCT MAIN LAYOUT ---------- */
+    .product-page,
+    .product-detail,
+    .product-container {
+        display: flex;
+        flex-direction: column;  /* ⬅ stack vertically */
+        gap: 24px;
+    }
+
+    /* ---------- PRODUCT IMAGE ---------- */
+    .product-image,
+    .product-card img,
+    .product-main img {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        max-height: 340px;       /* ⬅ BIG & visible */
+        margin: 0 auto;
+        display: block;
+        object-fit: contain;
+    }
+
+    /* ---------- IMAGE WRAPPER (IF ANY) ---------- */
+    .product-image-wrapper,
+    .product-media {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* ---------- PRODUCT INFO / DESCRIPTION ---------- */
+    .product-info,
+    .product-details,
+    .product-description {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+        text-align: left;
+    }
+
+    .product-info p,
+    .product-description p {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    /* ---------- PRICE ---------- */
+    .product-info .price,
+    .product-price {
+        font-size: 20px;
+        margin-top: 10px;
+    }
+
+    /* ---------- CTA / BUTTONS ---------- */
+    .product-info button,
+    .product-actions button {
+        width: 100%;
+        padding: 16px;
+        font-size: 16px;
+        border-radius: 28px;
+    }
+
+    /* ---------- REMOVE DESKTOP SIDE-BY-SIDE ---------- */
+    .product-info,
+    .product-image {
+        flex: none !important;
+    }
+}
+
