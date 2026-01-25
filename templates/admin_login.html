@@ -4,8 +4,7 @@
 <section class="admin-box">
     <h2>Admin Login</h2>
 
-    <form method="post" action="/admin">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <form method="post">
 
         <input type="text" name="username" placeholder="Username" required>
         <input type="password" name="password" placeholder="Password" required>

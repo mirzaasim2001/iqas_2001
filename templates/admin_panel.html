@@ -6,7 +6,6 @@
     <!-- ================= ADD NICHE ================= -->
     <h3>Add New Niche</h3>
     <form method="post" action="/admin/add-niche">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="text" name="niche" placeholder="e.g. electronics" required>
         <input type="text" name="logo" placeholder="Niche Logo URL (optional)">
         <button>Add Niche</button>
@@ -22,7 +21,6 @@
 
         <!-- RENAME NICHE -->
         <form method="post" action="/admin/edit-niche" class="inline-form">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="hidden" name="old_niche" value="{{ niche.name }}">
             <input type="text" name="new_niche" placeholder="Rename niche" required>
             <button>Rename</button>
@@ -30,7 +28,6 @@
 
         <!-- UPDATE NICHE LOGO -->
         <form method="post" action="/admin/update-niche-logo" class="inline-form">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="hidden" name="niche" value="{{ niche.name }}">
             <input
                 type="text"
@@ -43,7 +40,6 @@
 
         <!-- ADD SUB NICHE -->
         <form method="post" action="/admin/add-sub-niche" class="inline-form">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="hidden" name="niche" value="{{ niche.name }}">
             <input type="text" name="sub_niche" placeholder="e.g. phone" required>
             <button>Add Sub-Niche</button>
@@ -55,25 +51,26 @@
             {% for sn in sub_niches[niche.name] %}
             <li>
                 {{ sn | capitalize }}
-                <form method="post"
-                      action="/admin/delete-sub-niche/{{ niche.name }}/{{ sn }}"
-                      class="inline-form"
-                      onsubmit="return confirm('Delete sub-niche? Products will move to All.')">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <button class="danger">✕</button>
-                </form>
+                <a
+                    href="/admin/delete-sub-niche/{{ niche.name }}/{{ sn }}"
+                    class="danger"
+                    onclick="return confirm('Delete sub-niche? Products will move to All.')"
+                >
+                    ✕
+                </a>
             </li>
             {% endfor %}
         </ul>
         {% endif %}
 
         <!-- DELETE NICHE -->
-        <form method="post" action="/admin/delete-niche/{{ niche.name }}" class="inline-form"
-              onsubmit="return confirmDeleteNiche('{{ niche.name }}')">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <button class="danger">Delete Niche</button>
-        </form>
-
+        <a
+            href="/admin/delete-niche/{{ niche.name }}"
+            class="danger"
+            onclick="return confirmDeleteNiche('{{ niche.name }}')"
+        >
+            Delete Niche
+        </a>
 
 
     </div>
@@ -89,7 +86,6 @@
 
         <!-- ADD PRODUCT -->
         <form method="post" action="/admin/add-product" class="inline-add-form">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="hidden" name="niche" value="{{ niche }}">
             <input type="text" name="title" placeholder="Product title" required>
             <input type="text" name="price" placeholder="Price" required>
@@ -110,7 +106,6 @@
 
                     <!-- ASSIGN SUB NICHE -->
                     <form method="post" action="/admin/set-sub-niche">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="product_id" value="{{ product.id }}">
                         <select name="sub_niche" onchange="this.form.submit()">
                             <option value="all" {% if product.sub_niche == "all" %}selected{% endif %}>
@@ -127,42 +122,34 @@
                     </form>
 
                     <!-- BEST PRODUCT -->
-                    <form method="post" action="/admin/toggle-best/{{ product.id }}" class="inline-form">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                        <button>
-                            {% if product.is_best %}
-                                🏆 Remove Best
-                            {% else %}
-                                🏆 Set as Best
-                            {% endif %}
-                        </button>
-                    </form>
-
+                    <a href="/admin/toggle-best/{{ product.id }}">
+                        {% if product.is_best %}
+                            🏆 Remove Best
+                        {% else %}
+                            🏆 Set as Best
+                        {% endif %}
+                    </a>
 
                     <!-- FEATURE -->
-                    <form method="post" action="/admin/toggle-feature/{{ product.id }}" class="inline-form">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                        <button>
-                            {% if product.is_featured %}
-                                ⭐ Unfeature
-                            {% else %}
-                                ☆ Feature
-                            {% endif %}
-                        </button>
-                    </form>
-
+                    <a href="/admin/toggle-feature/{{ product.id }}">
+                        {% if product.is_featured %}
+                            ⭐ Unfeature
+                        {% else %}
+                            ☆ Feature
+                        {% endif %}
+                    </a>
 
                     <a href="/admin/edit-product/{{ niche }}/{{ product.id }}">
                         Edit Full Details
                     </a>
 
-                    <form method="post"
-                          action="/admin/delete-product/{{ niche }}/{{ product.id }}"
-                          class="inline-form"
-                          onsubmit="return confirm('Delete this product?')">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                        <button class="danger">Delete</button>
-                    </form>
+                    <a
+                        href="/admin/delete-product/{{ niche }}/{{ product.id }}"
+                        class="danger"
+                        onclick="return confirm('Delete this product?')"
+                    >
+                        Delete
+                    </a>
                 </div>
 
             </div>
@@ -174,11 +161,7 @@
     </div>
     {% endfor %}
 
-    <form method="post" action="/logout" class="logout-form">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <button class="logout">Logout</button>
-    </form>
-
+    <a class="logout" href="/logout">Logout</a>
 
 </section>
 <script>

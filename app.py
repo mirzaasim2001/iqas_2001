@@ -5,36 +5,17 @@ import os
 from dotenv import load_dotenv
 import requests
 import re
-from flask_wtf.csrf import CSRFProtect
 
 load_dotenv()
 
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
-app.config["WTF_CSRF_SECRET_KEY"] = SECRET_KEY
-
-csrf = CSRFProtect(app)
-
-from flask_wtf.csrf import generate_csrf
-app.jinja_env.globals["csrf_token"] = generate_csrf
 
 supabase = create_client(
     os.getenv("SUPABASE_URL"),
     os.getenv("SUPABASE_KEY")
 )
-
-from functools import wraps
-from flask import abort
-
-def admin_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        if session.get("admin") != ADMIN_USERNAME:
-            return redirect("/admin")
-        return f(*args, **kwargs)
-    return decorated
-
 
 def tokenize(text):
     if not text:
@@ -93,9 +74,10 @@ def home():
 
 
 # ---------------- DELETE NICHE ----------------
-@app.route("/admin/delete-niche/<niche>", methods=["POST"])
-@admin_required
+@app.route("/admin/delete-niche/<niche>")
 def delete_niche(niche):
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
 
     # count products in this niche FIRST
     count = (
@@ -120,8 +102,9 @@ def delete_niche(niche):
 
 # ---------------- EDIT NICHE ----------------
 @app.route("/admin/edit-niche", methods=["POST"])
-@admin_required
 def edit_niche():
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
 
     old = request.form["old_niche"]
     new = slugify(request.form["new_niche"])
@@ -134,8 +117,9 @@ def edit_niche():
 
 # ---------------- UPDATE NICHE LOGO ----------------
 @app.route("/admin/update-niche-logo", methods=["POST"])
-@admin_required
 def update_niche_logo():
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
 
     niche = request.form["niche"]
     logo = request.form.get("logo") or None
@@ -267,8 +251,9 @@ def admin_login():
 
 # ---------------- ADMIN PANEL ----------------
 @app.route("/admin/panel")
-@admin_required
 def admin_panel():
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
 
     # Fetch niches
     niches = supabase.table("niches").select("name, logo").execute().data
@@ -307,8 +292,9 @@ def slugify(text):
 
 
 @app.route("/admin/add-niche", methods=["POST"])
-@admin_required
 def add_niche():
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
 
     raw = request.form["niche"]
     niche = slugify(raw)
@@ -324,8 +310,9 @@ def add_niche():
 
 # ---------------- ADD PRODUCT ----------------
 @app.route("/admin/add-product", methods=["POST"])
-@admin_required
 def add_product():
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
 
     supabase.table("products").insert({
         "niche": request.form["niche"],
@@ -345,9 +332,10 @@ def add_product():
 
 
 # ---------------- TOGGLE FEATURE ----------------
-@app.route("/admin/toggle-feature/<product_id>", methods=["POST"])
-@admin_required
+@app.route("/admin/toggle-feature/<product_id>")
 def toggle_feature(product_id):
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
 
     product = (
         supabase.table("products")
@@ -385,9 +373,10 @@ def toggle_feature(product_id):
 
 
 # ---------------- DELETE PRODUCT ----------------
-@app.route("/admin/delete-product/<niche>/<product_id>", methods=["POST"])
-@admin_required
+@app.route("/admin/delete-product/<niche>/<product_id>")
 def delete_product(niche, product_id):
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
 
     supabase.table("products").delete().eq("id", product_id).execute()
     return redirect("/admin/panel")
@@ -395,8 +384,9 @@ def delete_product(niche, product_id):
 
 # ---------------- EDIT PRODUCT ----------------
 @app.route("/admin/edit-product/<niche>/<product_id>", methods=["GET", "POST"])
-@admin_required
 def edit_product(niche, product_id):
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
 
     product = (
         supabase.table("products")
@@ -490,8 +480,9 @@ def api_search():
 
 
 @app.route("/admin/add-sub-niche", methods=["POST"])
-@admin_required
 def add_sub_niche():
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
 
     supabase.table("sub_niches").insert({
         "niche": request.form["niche"],
@@ -502,8 +493,9 @@ def add_sub_niche():
 
 
 @app.route("/admin/set-sub-niche", methods=["POST"])
-@admin_required
 def set_sub_niche():
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
 
     supabase.table("products").update({
         "sub_niche": request.form["sub_niche"]
@@ -512,9 +504,10 @@ def set_sub_niche():
     return redirect("/admin/panel")
 
 
-@app.route("/admin/delete-sub-niche/<niche>/<sub>", methods=["POST"])
-@admin_required
+@app.route("/admin/delete-sub-niche/<niche>/<sub>")
 def delete_sub_niche(niche, sub):
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
 
     # Move products back to 'all'
     supabase.table("products").update({
@@ -530,9 +523,10 @@ def delete_sub_niche(niche, sub):
     return redirect("/admin/panel")
 
 
-@app.route("/admin/toggle-best/<product_id>", methods=["POST"])
-@admin_required
+@app.route("/admin/toggle-best/<product_id>")
 def toggle_best(product_id):
+    if session.get("admin") != ADMIN_USERNAME:
+        return redirect("/admin")
 
     # 1️⃣ Unset best only where it's currently true
     supabase.table("products").update({
@@ -550,8 +544,7 @@ def toggle_best(product_id):
 
 
 # ---------------- LOGOUT ----------------
-@app.route("/logout", methods=["POST"])
-@admin_required
+@app.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
