@@ -2008,3 +2008,98 @@ button:hover {
     }
 }
 
+
+/* =====================================================
+   📱 MOBILE – FORCE PRODUCT PAGE TO CENTER COLUMN
+   ===================================================== */
+@media (max-width: 768px) {
+
+    /* -------- FORCE COLUMN LAYOUT -------- */
+    .product-page,
+    .product-detail,
+    .product-container,
+    .product-main,
+    .product-wrapper {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 24px;
+        width: 100%;
+    }
+
+    /* -------- TITLE -------- */
+    .product-header h1 {
+        text-align: center;
+        width: 100%;
+    }
+
+    /* -------- IMAGE -------- */
+    .product-image,
+    .product-image-wrapper,
+    .product-media,
+    .product-main img,
+    .product-card img {
+        width: 100% !important;
+        max-width: 320px;          /* ⬅ big, centered image */
+        height: auto;
+        max-height: 360px;
+        margin: 0 auto !important;
+        display: block;
+        object-fit: contain;
+    }
+
+    /* -------- DESCRIPTION / INFO -------- */
+    .product-info,
+    .product-details,
+    .product-description {
+        width: 100% !important;
+        max-width: 520px;          /* ⬅ readable line length */
+        text-align: center;        /* ⬅ CENTER TEXT */
+        padding: 0 12px;
+        margin: 0 auto !important;
+    }
+
+    .product-description p,
+    .product-info p {
+        text-align: center;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    /* -------- PRICE -------- */
+    .product-price,
+    .product-info .price {
+        text-align: center;
+        font-size: 20px;
+        margin-top: 10px;
+    }
+
+    /* -------- PURCHASE / CTA BUTTON -------- */
+    .product-actions,
+    .product-cta,
+    .product-info button,
+    .product-actions button {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .product-info button,
+    .product-actions button {
+        width: 100%;
+        max-width: 320px;
+        margin: 10px auto 0;
+        padding: 16px;
+        font-size: 16px;
+        border-radius: 30px;
+    }
+
+    /* -------- KILL DESKTOP SIDE-BY-SIDE -------- */
+    .product-image,
+    .product-info {
+        flex: none !important;
+        float: none !important;
+    }
+}
+
