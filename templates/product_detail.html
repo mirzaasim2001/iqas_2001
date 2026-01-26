@@ -14,6 +14,7 @@
             <img src="{{ product.image }}" style="width:100%; border-radius:20px;">
         </div>
 
+
         <!-- PRODUCT INFO -->
         <div>
             <h2>{{ product.price }}</h2>
@@ -27,6 +28,25 @@
             </a>
         </div>
     </div>
+
+    {% if embed_url %}
+    <div style="
+        margin-top:30px;
+        border-radius:16px;
+        overflow:hidden;
+        box-shadow:0 10px 30px rgba(0,0,0,.15);
+    ">
+        <iframe
+            src="{{ embed_url }}"
+            width="100%"
+            height="400"
+            frameborder="0"
+            loading="lazy"
+            allow="autoplay; encrypted-media"
+            allowfullscreen>
+        </iframe>
+    </div>
+    {% endif %}
 
     <!-- EXTRA IMAGES (OPTIONAL) -->
     {% if images %}

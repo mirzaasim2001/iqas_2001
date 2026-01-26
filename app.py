@@ -33,6 +33,18 @@ def similarity_score(title_a, title_b):
     return len(a & b)
 
 
+def youtube_embed(url):
+    if not url:
+        return None
+
+    match = re.search(r"(?:v=|be/)([\w-]+)", url)
+    if not match:
+        return None
+
+    video_id = match.group(1)
+    return f"https://www.youtube.com/embed/{video_id}?autoplay=1&mute=1&rel=0"
+
+
 # ---------------- HOME ----------------
 @app.route("/")
 def home():
@@ -74,7 +86,7 @@ def home():
 
 
 # ---------------- DELETE NICHE ----------------
-@app.route("/admin/delete-niche/<niche>")
+@app.route("/admin/iqra928374asimsecret/delete-niche/<niche>")
 def delete_niche(niche):
     if session.get("admin") != ADMIN_USERNAME:
         return redirect("/admin")
@@ -179,6 +191,8 @@ def product_detail(niche, product_id):
     if not product:
         return redirect("/")
 
+    embed_url = youtube_embed(product.get("youtube_url"))
+
     # Fetch same-niche products except current
     candidates = (
         supabase.table("products")
@@ -219,7 +233,8 @@ def product_detail(niche, product_id):
                 product.get("extra_image_3")
             ] if img
         ],
-        related=related
+        related=related,
+        embed_url = embed_url
     )
 
 
@@ -320,6 +335,7 @@ def add_product():
         "price": request.form["price"],
         "image": request.form["image"],
         "link": request.form["link"],
+        "youtube_url": request.form.get("youtube_url"),
         "description": "",
         "extra_images": "",
         "is_featured": False,
@@ -404,6 +420,7 @@ def edit_product(niche, product_id):
             "image": request.form["image"],
             "link": request.form["link"],
             "description": request.form.get("description"),
+            "youtube_url": request.form.get("youtube_url"),
 
             "extra_image_1": request.form.get("extra_image_1") or None,
             "extra_image_2": request.form.get("extra_image_2") or None,
